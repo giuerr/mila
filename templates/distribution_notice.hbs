@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; margin: 0; padding: 0; font-size: 11px; }
+  .header { border-bottom: 3px solid {{branding.primaryColor}}; padding-bottom: 15px; margin-bottom: 25px; }
+  .fund-name { font-size: 22px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .firm-name { font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .notice-type { font-size: 16px; color: #27763d; font-weight: bold; margin-top: 10px; }
+  .date-line { font-size: 11px; color: #999; margin-top: 4px; }
+
+  .summary-box { background: linear-gradient(135deg, #edf7ed 0%, #d4edda 100%); padding: 22px; border-radius: 8px; margin: 22px 0; border-left: 4px solid #27763d; }
+  .summary-row { display: flex; justify-content: space-between; margin: 6px 0; font-size: 12px; }
+  .summary-label { color: #555; }
+  .summary-value { font-weight: bold; color: #1a1a2e; }
+
+  .section { margin-bottom: 25px; page-break-inside: avoid; }
+  .section-title { font-size: 13px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 9px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+  td { padding: 8px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
+  tr:nth-child(even) { background: #fafbfc; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; background: #f0f4ff; }
+  td.right, th.right { text-align: right; }
+
+  .dist-breakdown { background: #f8f9fa; padding: 18px; border-radius: 6px; margin: 15px 0; }
+  .breakdown-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; }
+  .breakdown-row.total { border-top: 2px solid #27763d; border-bottom: none; font-weight: bold; padding-top: 10px; margin-top: 5px; }
+
+  .investment-detail { background: #fffbe6; border-left: 3px solid {{branding.secondaryColor}}; padding: 15px; margin: 15px 0; border-radius: 0 6px 6px 0; }
+  .investment-detail .title { font-weight: bold; color: {{branding.primaryColor}}; margin-bottom: 8px; }
+
+  .waterfall-box { background: #f8f9fa; padding: 18px; border-radius: 6px; margin: 15px 0; }
+
+  .tax-notice { background: #fff8e6; border: 1px solid #ffeaa7; border-radius: 6px; padding: 15px; margin: 20px 0; }
+  .tax-notice .title { color: #856404; font-weight: bold; font-size: 12px; margin-bottom: 6px; }
+
+  .footnotes { font-size: 9px; color: #999; margin-top: 25px; padding-top: 10px; border-top: 1px solid #eee; line-height: 1.5; }
+  .confidential { color: #c0392b; font-size: 9px; font-weight: bold; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="confidential">CONFIDENTIAL</div>
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="notice-type">DISTRIBUTION NOTICE</div>
+  <div class="date-line">Distribution #{{distributionNumber}} | Notice Date: {{noticeDate}} | Payment Date: {{paymentDate}}</div>
+</div>
+
+<!-- Summary -->
+<div class="summary-box">
+  <div class="summary-row"><span class="summary-label">Total Distribution Amount</span><span class="summary-value" style="font-size:16px;color:#27763d">${{formatNumber totalAmount}}</span></div>
+  <div class="summary-row"><span class="summary-label">Distribution Type</span><span class="summary-value">{{distributionType}}</span></div>
+  <div class="summary-row"><span class="summary-label">Payment Date</span><span class="summary-value">{{paymentDate}}</span></div>
+  {{#if recallable}}
+  <div class="summary-row"><span class="summary-label">Recallable</span><span class="summary-value">Yes — per LPA Section {{recallSection}}</span></div>
+  {{/if}}
+</div>
+
+<!-- Source of Distribution -->
+{{#if investment}}
+<div class="investment-detail">
+  <div class="title">Source — {{investment.name}}</div>
+  <div class="summary-row"><span class="summary-label">Investment Date</span><span>{{investment.investmentDate}}</span></div>
+  <div class="summary-row"><span class="summary-label">Cost Basis</span><span>${{formatNumber investment.costBasis}}</span></div>
+  <div class="summary-row"><span class="summary-label">Realised Proceeds</span><span>${{formatNumber investment.realisedProceeds}}</span></div>
+  <div class="summary-row"><span class="summary-label">Gross MOIC</span><span>{{investment.grossMoic}}x</span></div>
+  <div class="summary-row"><span class="summary-label">Holding Period</span><span>{{investment.holdingPeriod}}</span></div>
+  {{#if investment.exitMethod}}
+  <div class="summary-row"><span class="summary-label">Exit Method</span><span>{{investment.exitMethod}}</span></div>
+  {{/if}}
+</div>
+{{/if}}
+
+<!-- Distribution Breakdown -->
+<div class="section">
+  <div class="section-title">Distribution Breakdown</div>
+  <div class="dist-breakdown">
+    <div class="breakdown-row"><span>Return of Capital</span><span>${{formatNumber breakdown.returnOfCapital}}</span></div>
+    <div class="breakdown-row"><span>Realised Gains</span><span>${{formatNumber breakdown.realisedGains}}</span></div>
+    <div class="breakdown-row"><span>Interest / Dividend Income</span><span>${{formatNumber breakdown.income}}</span></div>
+    {{#if breakdown.recallableAmount}}
+    <div class="breakdown-row"><span>Recallable Portion</span><span>${{formatNumber breakdown.recallableAmount}}</span></div>
+    {{/if}}
+    <div class="breakdown-row total"><span>Total Distribution</span><span>${{formatNumber totalAmount}}</span></div>
+  </div>
+</div>
+
+<!-- Waterfall Detail -->
+{{#if waterfall}}
+<div class="section">
+  <div class="section-title">Waterfall Application</div>
+  <div class="waterfall-box">
+    <div class="breakdown-row"><span>Tier 1 — Return of Contributed Capital</span><span>${{formatNumber waterfall.returnOfCapital}}</span></div>
+    <div class="breakdown-row"><span>Tier 2 — Preferred Return ({{waterfall.prefReturnRate}}%)</span><span>${{formatNumber waterfall.preferredReturn}}</span></div>
+    <div class="breakdown-row"><span>Tier 3 — GP Catch-up</span><span>${{formatNumber waterfall.gpCatchup}}</span></div>
+    <div class="breakdown-row"><span>Tier 4 — Carried Interest ({{waterfall.carryRate}}%)</span><span>${{formatNumber waterfall.carriedInterest}}</span></div>
+    <div class="breakdown-row"><span>Tier 4 — LP Share</span><span>${{formatNumber waterfall.lpShare}}</span></div>
+    <div class="breakdown-row total"><span>Total</span><span>${{formatNumber totalAmount}}</span></div>
+  </div>
+</div>
+{{/if}}
+
+<!-- Investor Allocation Table -->
+<div class="section">
+  <div class="section-title">Investor Allocation</div>
+  <table>
+    <tr>
+      <th>Investor</th>
+      <th class="right">Commitment</th>
+      <th class="right">This Distribution</th>
+      <th class="right">Withholding Tax</th>
+      <th class="right">Net Payment</th>
+      <th class="right">Cumulative Dist.</th>
+      <th class="right">DPI</th>
+    </tr>
+    {{#each investors}}
+    <tr>
+      <td>{{name}}</td>
+      <td class="right">${{formatNumber commitment}}</td>
+      <td class="right">${{formatNumber grossDistribution}}</td>
+      <td class="right">(${{{formatNumber withholdingTax}}})</td>
+      <td class="right"><strong>${{formatNumber netPayment}}</strong></td>
+      <td class="right">${{formatNumber cumulativeDistributions}}</td>
+      <td class="right">{{dpi}}x</td>
+    </tr>
+    {{/each}}
+    <tr class="total-row">
+      <td><strong>Total</strong></td>
+      <td class="right">${{formatNumber totals.commitment}}</td>
+      <td class="right">${{formatNumber totalAmount}}</td>
+      <td class="right">(${{{formatNumber totals.totalWithholding}}})</td>
+      <td class="right"><strong>${{formatNumber totals.totalNetPayment}}</strong></td>
+      <td class="right">${{formatNumber totals.cumulativeDistributions}}</td>
+      <td class="right">{{totals.dpi}}x</td>
+    </tr>
+  </table>
+</div>
+
+<!-- Tax Notice -->
+<div class="tax-notice">
+  <div class="title">Tax Information</div>
+  The tax character of this distribution (return of capital, capital gain, ordinary income) will be determined
+  and communicated in the Schedule K-1 for the applicable tax year. Withholding tax has been applied
+  to foreign investors based on applicable treaty rates. Please consult your tax advisor regarding the
+  tax implications of this distribution.
+</div>
+
+<div class="footnotes">
+  This Distribution Notice is issued pursuant to the terms of the Limited Partnership Agreement of {{fundName}}.
+  Amounts are subject to final audit adjustment. Net payments will be wired to the bank account on file
+  for each investor. Please verify your banking details are current.
+</div>
+
+</body>
+</html>

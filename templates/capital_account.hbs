@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; padding: 0; margin: 0; font-size: 11px; }
+  .header { border-bottom: 3px solid {{branding.primaryColor}}; padding-bottom: 15px; margin-bottom: 25px; }
+  .fund-name { font-size: 20px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .firm-name { font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .investor-name { font-size: 16px; color: #333; margin-top: 8px; }
+  .as-of { font-size: 12px; color: #666; margin-top: 4px; }
+  .confidential { color: #c0392b; font-size: 9px; font-weight: bold; letter-spacing: 1px; }
+
+  .section { margin-bottom: 25px; page-break-inside: avoid; }
+  .section-title { font-size: 13px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 9px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+  td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+  td.right, th.right { text-align: right; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; background: #f0f4ff; font-size: 12px; }
+  .subtotal-row td { font-weight: 600; border-top: 1px solid #ccc; background: #f8f9fa; }
+
+  .perf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 15px 0; }
+  .perf-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef1f6 100%); padding: 18px 12px; border-radius: 6px; text-align: center; border-left: 3px solid {{branding.primaryColor}}; }
+  .perf-value { font-size: 22px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .perf-label { font-size: 10px; color: #666; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .commitment-bar { background: #e9ecef; border-radius: 4px; height: 20px; margin: 10px 0; position: relative; }
+  .commitment-filled { background: {{branding.primaryColor}}; border-radius: 4px; height: 100%; }
+  .commitment-label { font-size: 10px; color: #666; margin-top: 4px; display: flex; justify-content: space-between; }
+
+  .footnotes { font-size: 9px; color: #999; margin-top: 30px; padding-top: 10px; border-top: 1px solid #eee; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="confidential">CONFIDENTIAL — FOR ADDRESSEE ONLY</div>
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="investor-name">{{investorName}}</div>
+  <div class="as-of">Capital Account Statement as of {{asOfDate}}</div>
+</div>
+
+<!-- Performance -->
+<div class="perf-grid">
+  <div class="perf-box"><div class="perf-value">{{netIrr}}%</div><div class="perf-label">Net IRR</div></div>
+  <div class="perf-box"><div class="perf-value">{{tvpi}}x</div><div class="perf-label">TVPI</div></div>
+  <div class="perf-box"><div class="perf-value">{{dpi}}x</div><div class="perf-label">DPI</div></div>
+</div>
+
+<!-- Commitment Summary -->
+<div class="section">
+  <div class="section-title">Commitment Summary</div>
+  <table>
+    <tr><td>Total Commitment</td><td class="right">${{formatNumber commitment}}</td></tr>
+    <tr><td>Cumulative Capital Called</td><td class="right">${{formatNumber totalCalled}}</td></tr>
+    <tr><td>Percentage Called</td><td class="right">{{pctCalled}}%</td></tr>
+    <tr><td>Unfunded Commitment</td><td class="right">${{formatNumber unfunded}}</td></tr>
+    {{#if recallable}}
+    <tr><td>Recallable Distributions</td><td class="right">${{formatNumber recallable}}</td></tr>
+    {{/if}}
+  </table>
+  <div class="commitment-bar"><div class="commitment-filled" style="width:{{pctCalled}}%"></div></div>
+  <div class="commitment-label"><span>Called: {{pctCalled}}%</span><span>Unfunded: {{pctUnfunded}}%</span></div>
+</div>
+
+<!-- Capital Account Activity -->
+<div class="section">
+  <div class="section-title">Capital Account Activity — {{period}}</div>
+  <table>
+    <tr><td>Beginning Capital Account Balance</td><td class="right">${{formatNumber beginningBalance}}</td></tr>
+    <tr><td style="padding-left:20px">Capital Contributions</td><td class="right">${{formatNumber periodContributions}}</td></tr>
+    <tr><td style="padding-left:20px">Capital Distributions</td><td class="right">(${{{formatNumber periodDistributions}}})</td></tr>
+    <tr class="subtotal-row"><td>Net Contributed Capital</td><td class="right">${{formatNumber netContributed}}</td></tr>
+    <tr><td style="padding-left:20px">Net Investment Income / (Loss)</td><td class="right">${{formatNumber netIncome}}</td></tr>
+    <tr><td style="padding-left:20px">Realised Gain / (Loss)</td><td class="right">${{formatNumber realisedGain}}</td></tr>
+    <tr><td style="padding-left:20px">Change in Unrealised Gain / (Loss)</td><td class="right">${{formatNumber unrealisedChange}}</td></tr>
+    <tr><td style="padding-left:20px">Management Fee Allocation</td><td class="right">(${{{formatNumber mgmtFeeAllocation}}})</td></tr>
+    <tr><td style="padding-left:20px">Performance Allocation (Carried Interest)</td><td class="right">(${{{formatNumber carryAllocation}}})</td></tr>
+    <tr><td style="padding-left:20px">Fund Expense Allocation</td><td class="right">(${{{formatNumber expenseAllocation}}})</td></tr>
+    <tr class="total-row"><td>Ending Capital Account Balance</td><td class="right">${{formatNumber endingBalance}}</td></tr>
+  </table>
+</div>
+
+<!-- Cumulative Summary -->
+<div class="section">
+  <div class="section-title">Cumulative Summary (Since Inception)</div>
+  <table>
+    <tr><td>Total Contributions</td><td class="right">${{formatNumber cumulativeContributions}}</td></tr>
+    <tr><td>Total Distributions</td><td class="right">${{formatNumber cumulativeDistributions}}</td></tr>
+    <tr><td>Net Cash Flow</td><td class="right">${{formatNumber netCashFlow}}</td></tr>
+    <tr><td>Remaining Value (NAV)</td><td class="right">${{formatNumber remainingValue}}</td></tr>
+    <tr class="total-row"><td>Total Value (Distributions + NAV)</td><td class="right">${{formatNumber totalValue}}</td></tr>
+  </table>
+</div>
+
+<!-- Transaction Detail -->
+{{#if transactions}}
+<div class="section">
+  <div class="section-title">Transaction Detail — {{period}}</div>
+  <table>
+    <tr><th>Date</th><th>Type</th><th>Description</th><th class="right">Amount</th><th class="right">Running Balance</th></tr>
+    {{#each transactions}}
+    <tr>
+      <td>{{date}}</td>
+      <td>{{type}}</td>
+      <td>{{description}}</td>
+      <td class="right">${{formatNumber amount}}</td>
+      <td class="right">${{formatNumber runningBalance}}</td>
+    </tr>
+    {{/each}}
+  </table>
+</div>
+{{/if}}
+
+<div class="footnotes">
+  This statement is prepared solely for the named investor and is based on unaudited data subject to adjustment upon completion
+  of the fund's annual audit. Performance returns are calculated net of management fees, carried interest, and fund expenses.
+  Valuations are based on estimates and may differ from actual realised values. Please refer to the fund's audited financial
+  statements for definitive capital account information.
+</div>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a2e; margin: 0; padding: 0; font-size: 11px; }
+  .cover { text-align: center; padding: 100px 40px; }
+  .cover .fund-name { font-size: 30px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .cover .firm-name { font-size: 13px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+  .cover .divider { width: 60px; height: 3px; background: {{branding.secondaryColor}}; margin: 25px auto; }
+  .cover .report-title { font-size: 18px; color: #333; }
+  .cover .period { font-size: 13px; color: #666; margin-top: 8px; }
+  .cover .classification { font-size: 11px; color: #c0392b; margin-top: 30px; font-weight: bold; letter-spacing: 1px; }
+
+  .page-break { page-break-before: always; }
+  .section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section-title { font-size: 14px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 2px solid {{branding.primaryColor}}; padding-bottom: 6px; margin-bottom: 14px; }
+  .sub-title { font-size: 12px; font-weight: bold; color: #444; margin: 15px 0 8px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+  td { padding: 7px 10px; border-bottom: 1px solid #eee; font-size: 10px; }
+  td.right, th.right { text-align: right; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; background: #f0f4ff; }
+
+  .metrics-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 18px 0; }
+  .metric-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef1f6 100%); padding: 15px 10px; border-radius: 6px; text-align: center; border-left: 3px solid {{branding.primaryColor}}; }
+  .metric-value { font-size: 20px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .metric-label { font-size: 9px; color: #666; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .metric-change { font-size: 9px; margin-top: 3px; }
+  .metric-change.positive { color: #27763d; }
+  .metric-change.negative { color: #c0392b; }
+
+  .toc { padding: 20px; }
+  .toc-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dotted #ddd; font-size: 12px; }
+  .toc-number { color: {{branding.primaryColor}}; font-weight: bold; width: 30px; }
+  .toc-title { flex: 1; }
+  .toc-page { color: #999; }
+
+  .risk-indicator { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 9px; font-weight: bold; }
+  .risk-low { background: #d4edda; color: #155724; }
+  .risk-medium { background: #fff3cd; color: #856404; }
+  .risk-high { background: #f8d7da; color: #721c24; }
+
+  .content { font-size: 11px; line-height: 1.7; }
+
+  .highlight-box { background: #fffbe6; border-left: 3px solid {{branding.secondaryColor}}; padding: 12px 15px; margin: 12px 0; font-size: 11px; }
+  .alert-box { background: #fff3f3; border-left: 3px solid #c0392b; padding: 12px 15px; margin: 12px 0; font-size: 11px; }
+  .success-box { background: #edf7ed; border-left: 3px solid #27763d; padding: 12px 15px; margin: 12px 0; font-size: 11px; }
+
+  .footnotes { font-size: 8px; color: #999; margin-top: 20px; padding-top: 8px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+
+<!-- Cover Page -->
+<div class="cover">
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="divider"></div>
+  <div class="report-title">Board Book</div>
+  <div class="period">{{period}}</div>
+  <div class="classification">CONFIDENTIAL — BOARD MEMBERS ONLY</div>
+</div>
+
+<!-- Table of Contents -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Contents</div>
+  <div class="toc">
+    <div class="toc-item"><span class="toc-number">1</span><span class="toc-title">Chairman's Letter</span></div>
+    <div class="toc-item"><span class="toc-number">2</span><span class="toc-title">Fund Performance Overview</span></div>
+    <div class="toc-item"><span class="toc-number">3</span><span class="toc-title">Portfolio Summary</span></div>
+    <div class="toc-item"><span class="toc-number">4</span><span class="toc-title">Capital Activity</span></div>
+    <div class="toc-item"><span class="toc-number">5</span><span class="toc-title">Deployment & Pipeline</span></div>
+    <div class="toc-item"><span class="toc-number">6</span><span class="toc-title">Risk Dashboard</span></div>
+    <div class="toc-item"><span class="toc-number">7</span><span class="toc-title">Compliance & Regulatory</span></div>
+    <div class="toc-item"><span class="toc-number">8</span><span class="toc-title">Financial Summary</span></div>
+  </div>
+</div>
+
+<!-- 1. Chairman's Letter -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">1. Chairman's Letter</div>
+  <div class="content">{{{chairmansLetter}}}</div>
+</div>
+
+<!-- 2. Fund Performance -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">2. Fund Performance Overview</div>
+  <div class="metrics-grid">
+    <div class="metric-box"><div class="metric-value">{{grossIrr}}%</div><div class="metric-label">Gross IRR</div></div>
+    <div class="metric-box"><div class="metric-value">{{netIrr}}%</div><div class="metric-label">Net IRR</div></div>
+    <div class="metric-box"><div class="metric-value">{{tvpi}}x</div><div class="metric-label">TVPI</div></div>
+    <div class="metric-box"><div class="metric-value">{{dpi}}x</div><div class="metric-label">DPI</div></div>
+    <div class="metric-box"><div class="metric-value">{{rvpi}}x</div><div class="metric-label">RVPI</div></div>
+  </div>
+  <table>
+    <tr><th>Metric</th><th class="right">Current</th><th class="right">Prior Quarter</th><th class="right">Change</th></tr>
+    <tr><td>NAV</td><td class="right">${{formatNumber nav}}</td><td class="right">${{formatNumber priorNav}}</td><td class="right">${{formatNumber navChange}}</td></tr>
+    <tr><td>Total Called Capital</td><td class="right">${{formatNumber totalCalled}}</td><td class="right">${{formatNumber priorCalled}}</td><td class="right">${{formatNumber calledChange}}</td></tr>
+    <tr><td>Total Distributions</td><td class="right">${{formatNumber totalDistributed}}</td><td class="right">${{formatNumber priorDistributed}}</td><td class="right">${{formatNumber distChange}}</td></tr>
+    <tr><td>Remaining Unfunded</td><td class="right">${{formatNumber unfunded}}</td><td class="right"></td><td class="right"></td></tr>
+  </table>
+</div>
+
+<!-- 3. Portfolio Summary -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">3. Portfolio Summary</div>
+  <table>
+    <tr><th>Company</th><th>Sector</th><th>Invested</th><th class="right">Cost</th><th class="right">Fair Value</th><th class="right">MOIC</th><th class="right">IRR</th><th>Status</th></tr>
+    {{#each portfolioCompanies}}
+    <tr>
+      <td><strong>{{name}}</strong></td><td>{{sector}}</td><td>{{investmentDate}}</td>
+      <td class="right">${{formatNumber cost}}</td><td class="right">${{formatNumber fairValue}}</td>
+      <td class="right">{{moic}}x</td><td class="right">{{irr}}%</td><td>{{status}}</td>
+    </tr>
+    {{/each}}
+    <tr class="total-row">
+      <td colspan="3"><strong>Total</strong></td>
+      <td class="right">${{formatNumber portfolioTotals.totalCost}}</td>
+      <td class="right">${{formatNumber portfolioTotals.totalFairValue}}</td>
+      <td class="right">{{portfolioTotals.blendedMoic}}x</td>
+      <td class="right">{{portfolioTotals.blendedIrr}}%</td><td></td>
+    </tr>
+  </table>
+</div>
+
+<!-- 4. Capital Activity -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">4. Capital Activity — {{period}}</div>
+  {{#if capitalCalls}}
+  <div class="sub-title">Capital Calls</div>
+  <table>
+    <tr><th>Date</th><th>Call #</th><th>Purpose</th><th class="right">Amount</th></tr>
+    {{#each capitalCalls}}<tr><td>{{date}}</td><td>#{{number}}</td><td>{{purpose}}</td><td class="right">${{formatNumber amount}}</td></tr>{{/each}}
+  </table>
+  {{/if}}
+  {{#if distributions}}
+  <div class="sub-title">Distributions</div>
+  <table>
+    <tr><th>Date</th><th>Source</th><th>Type</th><th class="right">Amount</th></tr>
+    {{#each distributions}}<tr><td>{{date}}</td><td>{{source}}</td><td>{{type}}</td><td class="right">${{formatNumber amount}}</td></tr>{{/each}}
+  </table>
+  {{/if}}
+</div>
+
+<!-- 5. Deployment & Pipeline -->
+<div class="section">
+  <div class="section-title">5. Deployment & Pipeline</div>
+  <div class="content">{{{deploymentCommentary}}}</div>
+  {{#if pipeline}}
+  <div class="sub-title">Active Pipeline</div>
+  <table>
+    <tr><th>Opportunity</th><th>Sector</th><th>Stage</th><th class="right">Target Size</th><th>Expected Close</th></tr>
+    {{#each pipeline}}<tr><td>{{name}}</td><td>{{sector}}</td><td>{{stage}}</td><td class="right">${{formatNumber targetSize}}</td><td>{{expectedClose}}</td></tr>{{/each}}
+  </table>
+  {{/if}}
+</div>
+
+<!-- 6. Risk Dashboard -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">6. Risk Dashboard</div>
+  <table>
+    <tr><th>Risk Category</th><th>Metric</th><th class="right">Value</th><th>Threshold</th><th>Status</th></tr>
+    {{#each risks}}
+    <tr>
+      <td>{{category}}</td><td>{{metric}}</td><td class="right">{{value}}</td><td>{{threshold}}</td>
+      <td><span class="risk-indicator risk-{{status}}">{{status}}</span></td>
+    </tr>
+    {{/each}}
+  </table>
+</div>
+
+<!-- 7. Compliance -->
+<div class="section">
+  <div class="section-title">7. Compliance & Regulatory</div>
+  <div class="content">{{{complianceUpdate}}}</div>
+  {{#if upcomingFilings}}
+  <div class="sub-title">Upcoming Filings</div>
+  <table>
+    <tr><th>Filing</th><th>Jurisdiction</th><th>Deadline</th><th>Status</th></tr>
+    {{#each upcomingFilings}}<tr><td>{{name}}</td><td>{{jurisdiction}}</td><td>{{deadline}}</td><td>{{status}}</td></tr>{{/each}}
+  </table>
+  {{/if}}
+</div>
+
+<!-- 8. Financial Summary -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">8. Financial Summary</div>
+  <table>
+    <tr><th colspan="2">Condensed Balance Sheet</th></tr>
+    <tr><td>Investments at Fair Value</td><td class="right">${{formatNumber financials.investments}}</td></tr>
+    <tr><td>Cash</td><td class="right">${{formatNumber financials.cash}}</td></tr>
+    <tr><td>Other Assets</td><td class="right">${{formatNumber financials.otherAssets}}</td></tr>
+    <tr class="total-row"><td>Total Assets</td><td class="right">${{formatNumber financials.totalAssets}}</td></tr>
+    <tr><td>Total Liabilities</td><td class="right">${{formatNumber financials.totalLiabilities}}</td></tr>
+    <tr class="total-row"><td>Partners' Capital</td><td class="right">${{formatNumber financials.partnersCapital}}</td></tr>
+  </table>
+  <table>
+    <tr><th colspan="2">Expense Ratio</th></tr>
+    <tr><td>Management Fees</td><td class="right">${{formatNumber financials.mgmtFees}}</td></tr>
+    <tr><td>Other Fund Expenses</td><td class="right">${{formatNumber financials.otherExpenses}}</td></tr>
+    <tr class="total-row"><td>Total Expense Ratio (annualised)</td><td class="right">{{financials.expenseRatio}}%</td></tr>
+  </table>
+</div>
+
+<div class="footnotes">
+  This Board Book is confidential and prepared solely for the Board of Directors / LPAC members of {{fundName}}.
+  All data is unaudited and based on the General Partner's estimates as of the report date. Past performance
+  is not indicative of future results.
+</div>
+
+</body>
+</html>

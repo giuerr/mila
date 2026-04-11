@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Georgia', 'Times New Roman', serif; color: #1a1a2e; line-height: 1.7; margin: 0; padding: 0; font-size: 12px; }
+  .header { border-bottom: 2px solid {{branding.primaryColor}}; padding-bottom: 20px; margin-bottom: 30px; }
+  .fund-name { font-size: 26px; font-weight: bold; color: {{branding.primaryColor}}; letter-spacing: 0.5px; }
+  .firm-name { font-size: 11px; color: #888; margin-top: 2px; letter-spacing: 1px; text-transform: uppercase; }
+  .period { font-size: 13px; color: #555; margin-top: 8px; }
+  .date-line { font-size: 11px; color: #999; margin-top: 4px; }
+  .salutation { margin: 25px 0 15px 0; font-size: 12px; }
+
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 25px 0; }
+  .metric-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef1f6 100%); padding: 18px 12px; border-radius: 6px; text-align: center; border-left: 3px solid {{branding.primaryColor}}; }
+  .metric-value { font-size: 24px; font-weight: bold; color: {{branding.primaryColor}}; font-family: 'Helvetica Neue', sans-serif; }
+  .metric-label { font-size: 10px; color: #666; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section-title { font-size: 15px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin-bottom: 12px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11px; font-family: 'Helvetica Neue', sans-serif; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; }
+  td { padding: 7px 10px; border-bottom: 1px solid #eee; }
+  tr:nth-child(even) { background: #fafbfc; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; background: #f0f4ff; }
+
+  .capital-summary { background: #f8f9fa; padding: 20px; border-radius: 6px; margin: 20px 0; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; }
+  .capital-summary table { margin: 0; }
+
+  .content { font-size: 12px; white-space: pre-wrap; line-height: 1.8; }
+  .portfolio-highlight { background: #fffbe6; border-left: 3px solid {{branding.secondaryColor}}; padding: 12px 15px; margin: 15px 0; font-size: 11px; }
+
+  .closing { margin-top: 35px; }
+  .signature-block { margin-top: 40px; }
+  .signature-name { font-weight: bold; font-size: 13px; }
+  .signature-title { font-size: 11px; color: #666; }
+
+  .disclaimer { margin-top: 40px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 9px; color: #999; line-height: 1.4; }
+  .confidential { color: #c0392b; font-size: 9px; font-weight: bold; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="confidential">CONFIDENTIAL</div>
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="period">Quarterly Report — {{period}}</div>
+  <div class="date-line">Report Date: {{reportDate}}</div>
+</div>
+
+<div class="salutation">Dear Limited Partners,</div>
+
+<!-- Key Performance Metrics -->
+<div class="metrics-grid">
+  <div class="metric-box">
+    <div class="metric-value">{{netIrr}}</div>
+    <div class="metric-label">Net IRR</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-value">{{tvpi}}x</div>
+    <div class="metric-label">TVPI</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-value">{{dpi}}x</div>
+    <div class="metric-label">DPI</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-value">${{formatNumber nav}}</div>
+    <div class="metric-label">Net Asset Value</div>
+  </div>
+</div>
+
+<!-- Fund Overview / Letter Content -->
+<div class="section">
+  <div class="section-title">Fund Overview</div>
+  <div class="content">{{{content}}}</div>
+</div>
+
+<!-- Capital Activity -->
+{{#if capitalActivity}}
+<div class="section">
+  <div class="section-title">Capital Activity — {{period}}</div>
+  <div class="capital-summary">
+    <table>
+      <tr><td>Beginning Capital</td><td style="text-align:right">${{formatNumber capitalActivity.beginningCapital}}</td></tr>
+      <tr><td>Capital Contributions</td><td style="text-align:right">${{formatNumber capitalActivity.contributions}}</td></tr>
+      <tr><td>Capital Distributions</td><td style="text-align:right">(${{{formatNumber capitalActivity.distributions}}})</td></tr>
+      <tr><td>Net Investment Income</td><td style="text-align:right">${{formatNumber capitalActivity.netIncome}}</td></tr>
+      <tr><td>Unrealized Gain / (Loss)</td><td style="text-align:right">${{formatNumber capitalActivity.unrealizedGain}}</td></tr>
+      <tr class="total-row"><td>Ending Capital</td><td style="text-align:right">${{formatNumber capitalActivity.endingCapital}}</td></tr>
+    </table>
+  </div>
+</div>
+{{/if}}
+
+<!-- Portfolio Summary -->
+{{#if portfolioCompanies}}
+<div class="section">
+  <div class="section-title">Portfolio Summary</div>
+  <table>
+    <tr><th>Company</th><th>Sector</th><th>Investment Date</th><th>Cost</th><th>Fair Value</th><th>MOIC</th><th>Status</th></tr>
+    {{#each portfolioCompanies}}
+    <tr>
+      <td><strong>{{name}}</strong></td>
+      <td>{{sector}}</td>
+      <td>{{investmentDate}}</td>
+      <td>${{formatNumber cost}}</td>
+      <td>${{formatNumber fairValue}}</td>
+      <td>{{moic}}x</td>
+      <td>{{status}}</td>
+    </tr>
+    {{/each}}
+    {{#if portfolioTotals}}
+    <tr class="total-row">
+      <td colspan="3"><strong>Total Portfolio</strong></td>
+      <td>${{formatNumber portfolioTotals.totalCost}}</td>
+      <td>${{formatNumber portfolioTotals.totalFairValue}}</td>
+      <td>{{portfolioTotals.totalMoic}}x</td>
+      <td></td>
+    </tr>
+    {{/if}}
+  </table>
+</div>
+{{/if}}
+
+<!-- Market Commentary -->
+{{#if marketCommentary}}
+<div class="section">
+  <div class="section-title">Market Commentary</div>
+  <div class="content">{{{marketCommentary}}}</div>
+</div>
+{{/if}}
+
+<!-- Outlook -->
+{{#if outlook}}
+<div class="section">
+  <div class="section-title">Outlook & Pipeline</div>
+  <div class="content">{{{outlook}}}</div>
+</div>
+{{/if}}
+
+<!-- Fee Summary -->
+{{#if fees}}
+<div class="section">
+  <div class="section-title">Fee Summary</div>
+  <table>
+    <tr><th>Fee Type</th><th>Basis</th><th>Rate</th><th>Amount</th></tr>
+    {{#each fees}}
+    <tr><td>{{type}}</td><td>{{basis}}</td><td>{{rate}}</td><td>${{formatNumber amount}}</td></tr>
+    {{/each}}
+  </table>
+</div>
+{{/if}}
+
+<!-- Closing -->
+<div class="closing">
+  <div class="content">We appreciate your continued partnership and confidence in our team. As always, we welcome your questions and are available to discuss any aspect of this report.</div>
+</div>
+
+<div class="signature-block">
+  <div class="signature-name">{{gpName}}</div>
+  <div class="signature-title">{{gpTitle}}</div>
+  <div class="signature-title">{{branding.firmName}}</div>
+</div>
+
+<div class="disclaimer">
+  This report is confidential and intended solely for the use of the limited partners of {{fundName}}.
+  Past performance is not indicative of future results. The valuations contained herein are based on
+  estimates and may differ materially from actual realised values. This document does not constitute
+  an offer to sell or a solicitation of an offer to buy any securities.
+</div>
+
+</body>
+</html>

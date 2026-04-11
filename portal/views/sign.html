@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Document — Antoninus Global SPC</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Pacifico&family=Sacramento&family=Caveat:wght@400;700&family=Satisfy&family=Lobster&family=Tangerine:wght@700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f6fa; color: #1a1a2e; }
+
+  .top-bar { background: #1a365d; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+  .top-bar .logo { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
+  .top-bar .secure { font-size: 12px; opacity: 0.8; }
+  .top-bar .secure::before { content: '🔒 '; }
+
+  .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+
+  .doc-card { background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 30px; margin-bottom: 20px; }
+  .doc-card h2 { font-size: 20px; color: #1a365d; margin-bottom: 5px; }
+  .doc-card .meta { font-size: 13px; color: #888; margin-bottom: 20px; }
+  .doc-card .meta span { margin-right: 15px; }
+
+  .doc-preview { background: #fafafa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; margin-bottom: 20px; min-height: 200px; max-height: 400px; overflow-y: auto; }
+  .doc-preview h3 { font-size: 14px; color: #666; margin-bottom: 10px; }
+
+  /* Signature Section */
+  .sig-section { margin-top: 25px; }
+  .sig-section h3 { font-size: 16px; color: #1a365d; margin-bottom: 15px; }
+
+  .tab-bar { display: flex; border-bottom: 2px solid #e0e0e0; margin-bottom: 20px; }
+  .tab { padding: 10px 20px; cursor: pointer; font-size: 14px; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .tab:hover { color: #1a365d; }
+  .tab.active { color: #1a365d; border-bottom-color: #1a365d; font-weight: bold; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Type signature */
+  .name-input { width: 100%; padding: 12px 15px; border: 2px solid #ddd; border-radius: 6px; font-size: 16px; outline: none; transition: border 0.2s; }
+  .name-input:focus { border-color: #1a365d; }
+
+  .style-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
+  .style-option { border: 2px solid #e0e0e0; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: white; }
+  .style-option:hover { border-color: #1a365d; background: #f0f4ff; }
+  .style-option.selected { border-color: #1a365d; background: #e8eef8; box-shadow: 0 0 0 3px rgba(26,54,93,0.15); }
+  .style-option .sig-preview { font-size: 32px; color: #1a1a2e; padding: 10px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .style-option .style-name { font-size: 11px; color: #999; margin-top: 5px; }
+
+  .font-dancing { font-family: 'Dancing Script', cursive; }
+  .font-great-vibes { font-family: 'Great Vibes', cursive; }
+  .font-pacifico { font-family: 'Pacifico', cursive; }
+  .font-sacramento { font-family: 'Sacramento', cursive; font-size: 40px !important; }
+  .font-caveat { font-family: 'Caveat', cursive; }
+  .font-satisfy { font-family: 'Satisfy', cursive; }
+  .font-lobster { font-family: 'Lobster', cursive; }
+  .font-tangerine { font-family: 'Tangerine', cursive; font-size: 44px !important; font-weight: 700; }
+
+  /* Draw signature */
+  .canvas-container { position: relative; margin-top: 10px; }
+  #sig-canvas { border: 2px dashed #ccc; border-radius: 8px; cursor: crosshair; background: white; width: 100%; height: 200px; touch-action: none; }
+  #sig-canvas.drawing { border-color: #1a365d; border-style: solid; }
+  .canvas-actions { display: flex; gap: 10px; margin-top: 10px; }
+  .canvas-actions button { padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+  .canvas-actions button:hover { background: #f0f0f0; }
+
+  /* Signature preview */
+  .final-preview { margin-top: 20px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; text-align: center; }
+  .final-preview .label { font-size: 12px; color: #999; margin-bottom: 10px; }
+  .final-preview .signature { min-height: 60px; display: flex; align-items: center; justify-content: center; }
+  .final-preview .signature img { max-height: 80px; }
+  .final-preview .sig-line { width: 300px; border-bottom: 1px solid #333; margin: 0 auto; padding-top: 10px; }
+  .final-preview .sig-date { font-size: 12px; color: #666; margin-top: 8px; }
+
+  /* Consent */
+  .consent-box { margin-top: 20px; padding: 15px; background: #fff8e6; border: 1px solid #f0d060; border-radius: 6px; }
+  .consent-box label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 13px; line-height: 1.5; }
+  .consent-box input[type="checkbox"] { margin-top: 4px; width: 18px; height: 18px; accent-color: #1a365d; }
+
+  /* Sign button */
+  .sign-btn { width: 100%; padding: 16px; background: #1a365d; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: all 0.2s; }
+  .sign-btn:hover:not(:disabled) { background: #2a4a7f; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,54,93,0.3); }
+  .sign-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Success state */
+  .success-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26,54,93,0.95); z-index: 100; justify-content: center; align-items: center; }
+  .success-overlay.show { display: flex; }
+  .success-card { background: white; border-radius: 12px; padding: 40px; text-align: center; max-width: 500px; }
+  .success-card .checkmark { font-size: 60px; margin-bottom: 15px; }
+  .success-card h2 { color: #1a365d; margin-bottom: 10px; }
+  .success-card p { color: #666; font-size: 14px; line-height: 1.6; }
+  .success-card .details { margin-top: 20px; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 6px; font-size: 12px; }
+  .success-card .details div { margin-bottom: 5px; }
+  .success-card .details strong { color: #1a365d; }
+
+  /* Pen color selector */
+  .pen-colors { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+  .pen-colors span { font-size: 12px; color: #666; }
+  .pen-color { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+  .pen-color:hover, .pen-color.active { border-color: #1a365d; transform: scale(1.15); }
+  .pen-color.black { background: #1a1a2e; }
+  .pen-color.blue { background: #1a365d; }
+  .pen-color.navy { background: #0a1628; }
+
+  @media (max-width: 600px) {
+    .style-grid { grid-template-columns: 1fr; }
+    .style-option .sig-preview { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="logo">ANTONINUS GLOBAL SPC</div>
+  <div class="secure">Secure Signing Session</div>
+</div>
+
+<div class="container">
+  <!-- Document Info -->
+  <div class="doc-card">
+    <h2 id="doc-title">Subscription Agreement</h2>
+    <div class="meta">
+      <span id="doc-fund">Fund: Antoninus Fund I</span>
+      <span id="doc-sender">From: Operations Team</span>
+    </div>
+
+    <div class="doc-preview">
+      <h3>Document Preview</h3>
+      <div id="doc-content">
+        <p style="color: #666; font-size: 13px;">The document will be displayed here. By signing below, you acknowledge that you have read, understood, and agree to the terms of this document.</p>
+      </div>
+    </div>
+
+    <!-- Signature Section -->
+    <div class="sig-section">
+      <h3>Apply Your Signature</h3>
+
+      <div class="tab-bar">
+        <div class="tab active" data-tab="type">Type</div>
+        <div class="tab" data-tab="draw">Draw</div>
+      </div>
+
+      <!-- TYPE TAB -->
+      <div id="tab-type" class="tab-content active">
+        <input type="text" class="name-input" id="sig-name" placeholder="Type your full legal name..." autocomplete="off">
+
+        <div class="style-grid" id="style-grid">
+          <div class="style-option selected" data-font="font-dancing">
+            <div class="sig-preview font-dancing" data-preview>Your Name</div>
+            <div class="style-name">Elegant</div>
+          </div>
+          <div class="style-option" data-font="font-great-vibes">
+            <div class="sig-preview font-great-vibes" data-preview>Your Name</div>
+            <div class="style-name">Classic</div>
+          </div>
+          <div class="style-option" data-font="font-sacramento">
+            <div class="sig-preview font-sacramento" data-preview>Your Name</div>
+            <div class="style-name">Flowing</div>
+          </div>
+          <div class="style-option" data-font="font-caveat">
+            <div class="sig-preview font-caveat" data-preview>Your Name</div>
+            <div class="style-name">Handwritten</div>
+          </div>
+          <div class="style-option" data-font="font-satisfy">
+            <div class="sig-preview font-satisfy" data-preview>Your Name</div>
+            <div class="style-name">Smooth</div>
+          </div>
+          <div class="style-option" data-font="font-pacifico">
+            <div class="sig-preview font-pacifico" data-preview>Your Name</div>
+            <div class="style-name">Bold</div>
+          </div>
+          <div class="style-option" data-font="font-lobster">
+            <div class="sig-preview font-lobster" data-preview>Your Name</div>
+            <div class="style-name">Strong</div>
+          </div>
+          <div class="style-option" data-font="font-tangerine">
+            <div class="sig-preview font-tangerine" data-preview>Your Name</div>
+            <div class="style-name">Script</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRAW TAB -->
+      <div id="tab-draw" class="tab-content">
+        <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Draw your signature using your mouse, trackpad, or finger:</p>
+        <div class="canvas-container">
+          <canvas id="sig-canvas" width="760" height="200"></canvas>
+        </div>
+        <div class="pen-colors">
+          <span>Ink color:</span>
+          <div class="pen-color black active" data-color="#1a1a2e"></div>
+          <div class="pen-color blue" data-color="#1a365d"></div>
+          <div class="pen-color navy" data-color="#0a1628"></div>
+        </div>
+        <div class="canvas-actions">
+          <button onclick="clearCanvas()">Clear</button>
+          <button onclick="undoStroke()">Undo</button>
+        </div>
+      </div>
+
+      <!-- Final Preview -->
+      <div class="final-preview" id="final-preview" style="display:none;">
+        <div class="label">Your signature will appear as:</div>
+        <div class="signature" id="sig-display"></div>
+        <div class="sig-line"></div>
+        <div class="sig-date" id="sig-date"></div>
+      </div>
+
+      <!-- Consent -->
+      <div class="consent-box">
+        <label>
+          <input type="checkbox" id="consent-check">
+          I agree to sign this document electronically. I understand that my electronic signature has the same legal validity and effect as a handwritten signature under applicable law, including the ESIGN Act, UETA, eIDAS, and the Cayman Islands Electronic Transactions Act.
+        </label>
+      </div>
+
+      <!-- Sign Button -->
+      <button class="sign-btn" id="sign-btn" disabled onclick="submitSignature()">
+        Sign Document
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Success Overlay -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-card">
+    <div class="checkmark">&#10003;</div>
+    <h2>Document Signed Successfully</h2>
+    <p>Your signature has been recorded with full legal validity. A confirmation email will be sent to your address.</p>
+    <div class="details" id="success-details"></div>
+  </div>
+</div>
+
+<script>
+  // ==================== STATE ====================
+  let selectedFont = 'font-dancing';
+  let activeTab = 'type';
+  let penColor = '#1a1a2e';
+  let drawing = false;
+  let strokes = [];
+  let currentStroke = [];
+  const canvas = document.getElementById('sig-canvas');
+  const ctx = canvas.getContext('2d');
+
+  // ==================== TABS ====================
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      activeTab = tab.dataset.tab;
+      document.getElementById(`tab-${activeTab}`).classList.add('active');
+      updatePreview();
+    });
+  });
+
+  // ==================== TYPED SIGNATURE ====================
+  const nameInput = document.getElementById('sig-name');
+  nameInput.addEventListener('input', () => {
+    const name = nameInput.value || 'Your Name';
+    document.querySelectorAll('[data-preview]').forEach(el => { el.textContent = name; });
+    updatePreview();
+  });
+
+  // Style selection
+  document.querySelectorAll('.style-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.style-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedFont = opt.dataset.font;
+      updatePreview();
+    });
+  });
+
+  // ==================== DRAWN SIGNATURE ====================
+  function initCanvas() {
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = penColor;
+
+    // Resize canvas to actual display size
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = 200;
+  }
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches ? e.touches[0] : e;
+    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  }
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', endDraw);
+  canvas.addEventListener('mouseleave', endDraw);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e); });
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e); });
+  canvas.addEventListener('touchend', endDraw);
+
+  function startDraw(e) {
+    drawing = true;
+    canvas.classList.add('drawing');
+    currentStroke = [];
+    const pos = getPos(e);
+    currentStroke.push(pos);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    const pos = getPos(e);
+    currentStroke.push(pos);
+    ctx.strokeStyle = penColor;
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+  }
+
+  function endDraw() {
+    if (!drawing) return;
+    drawing = false;
+    canvas.classList.remove('drawing');
+    if (currentStroke.length > 1) {
+      strokes.push({ points: [...currentStroke], color: penColor });
+    }
+    currentStroke = [];
+    updatePreview();
+  }
+
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    strokes = [];
+    updatePreview();
+  }
+
+  function undoStroke() {
+    strokes.pop();
+    redrawCanvas();
+    updatePreview();
+  }
+
+  function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const stroke of strokes) {
+      ctx.beginPath();
+      ctx.strokeStyle = stroke.color;
+      for (let i = 0; i < stroke.points.length; i++) {
+        if (i === 0) ctx.moveTo(stroke.points[i].x, stroke.points[i].y);
+        else ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  // Pen colors
+  document.querySelectorAll('.pen-color').forEach(pc => {
+    pc.addEventListener('click', () => {
+      document.querySelectorAll('.pen-color').forEach(p => p.classList.remove('active'));
+      pc.classList.add('active');
+      penColor = pc.dataset.color;
+    });
+  });
+
+  // ==================== PREVIEW & VALIDATION ====================
+  function updatePreview() {
+    const preview = document.getElementById('final-preview');
+    const display = document.getElementById('sig-display');
+    const dateEl = document.getElementById('sig-date');
+    const btn = document.getElementById('sign-btn');
+
+    let hasSignature = false;
+
+    if (activeTab === 'type' && nameInput.value.trim().length >= 2) {
+      const span = document.createElement('span');
+      span.className = selectedFont;
+      span.style.cssText = 'font-size: 36px; color: #1a1a2e;';
+      span.textContent = nameInput.value; // textContent prevents XSS
+      display.innerHTML = '';
+      display.appendChild(span);
+      hasSignature = true;
+    } else if (activeTab === 'draw' && strokes.length > 0) {
+      const dataUrl = canvas.toDataURL('image/png');
+      display.innerHTML = `<img src="${dataUrl}" style="max-height: 70px;">`;
+      hasSignature = true;
+    }
+
+    if (hasSignature) {
+      preview.style.display = 'block';
+      dateEl.textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } else {
+      preview.style.display = 'none';
+    }
+
+    // Enable/disable sign button
+    const consented = document.getElementById('consent-check').checked;
+    btn.disabled = !(hasSignature && consented);
+  }
+
+  document.getElementById('consent-check').addEventListener('change', updatePreview);
+
+  // ==================== SUBMIT SIGNATURE ====================
+  async function submitSignature() {
+    const btn = document.getElementById('sign-btn');
+    btn.disabled = true;
+    btn.textContent = 'Signing...';
+
+    // Capture geolocation
+    let geo = {};
+    try {
+      const pos = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+      });
+      geo = { latitude: pos.coords.latitude, longitude: pos.coords.longitude, geoAccuracy: pos.coords.accuracy };
+    } catch (e) { /* Geolocation denied or unavailable */ }
+
+    // Build signature data
+    let signatureImage = null;
+    let signatureMethod = 'TYPED';
+    let typedSignature = null;
+
+    if (activeTab === 'draw') {
+      signatureImage = canvas.toDataURL('image/png');
+      signatureMethod = 'DRAWN';
+    } else {
+      // Render typed signature to canvas for image capture
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = 600;
+      tempCanvas.height = 120;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.fillStyle = 'white';
+      tempCtx.fillRect(0, 0, 600, 120);
+
+      const fontMap = {
+        'font-dancing': '40px Dancing Script',
+        'font-great-vibes': '40px Great Vibes',
+        'font-pacifico': '36px Pacifico',
+        'font-sacramento': '48px Sacramento',
+        'font-caveat': '40px Caveat',
+        'font-satisfy': '40px Satisfy',
+        'font-lobster': '36px Lobster',
+        'font-tangerine': '52px Tangerine'
+      };
+
+      tempCtx.font = fontMap[selectedFont] || '40px Dancing Script';
+      tempCtx.fillStyle = '#1a1a2e';
+      tempCtx.textBaseline = 'middle';
+      tempCtx.fillText(nameInput.value, 20, 60);
+
+      signatureImage = tempCanvas.toDataURL('image/png');
+      typedSignature = { name: nameInput.value, font: selectedFont };
+    }
+
+    // Get URL params
+    const pathParts = window.location.pathname.split('/');
+    const envelopeId = pathParts[pathParts.length - 2] || new URLSearchParams(window.location.search).get('envelopeId');
+    const signerId = pathParts[pathParts.length - 1]?.split('?')[0] || new URLSearchParams(window.location.search).get('signerId');
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    const payload = {
+      signatureImage,
+      signatureMethod,
+      typedSignature,
+      consent: true,
+      screenResolution: `${screen.width}x${screen.height}`,
+      ...geo
+    };
+
+    try {
+      const response = await fetch(`/api/sign/${envelopeId}/${signerId}?token=${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Show success — use textContent to prevent XSS from server responses
+        const overlay = document.getElementById('success-overlay');
+        const details = document.getElementById('success-details');
+        details.innerHTML = ''; // Clear
+        const esc = (s) => { const d = document.createElement('div'); d.textContent = s || ''; return d.textContent; };
+        const addLine = (label, value) => {
+          const div = document.createElement('div');
+          div.innerHTML = `<strong>${esc(label)}:</strong> `;
+          div.appendChild(document.createTextNode(esc(value)));
+          details.appendChild(div);
+        };
+        addLine('Signature Hash', (result.signatureHash || '').substring(0, 20) + '...');
+        addLine('IP Address', result.evidence?.ipAddress);
+        addLine('Timestamp', result.evidence?.timestamp);
+        addLine('Location', result.evidence?.location);
+        addLine('Browser', (result.evidence?.browser || '') + ' / ' + (result.evidence?.os || ''));
+        if (result.signingCertificate) addLine('Certificate', result.signingCertificate.certificateId);
+        overlay.classList.add('show');
+      } else {
+        alert('Signing failed: ' + (result.error || 'Unknown error'));
+        btn.disabled = false;
+        btn.textContent = 'Sign Document';
+      }
+    } catch (err) {
+      alert('Network error: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Sign Document';
+    }
+  }
+
+  // ==================== INIT ====================
+  window.addEventListener('load', () => {
+    initCanvas();
+    // Load envelope details from URL params if available
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('docTitle')) document.getElementById('doc-title').textContent = params.get('docTitle');
+    if (params.get('fund')) document.getElementById('doc-fund').textContent = 'Fund: ' + params.get('fund');
+  });
+
+  window.addEventListener('resize', () => {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = 200;
+    redrawCanvas();
+  });
+</script>
+</body>
+</html>

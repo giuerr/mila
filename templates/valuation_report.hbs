@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a2e; margin: 0; padding: 0; font-size: 11px; }
+  .header { border-bottom: 3px solid {{branding.primaryColor}}; padding-bottom: 15px; margin-bottom: 25px; }
+  .fund-name { font-size: 22px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .firm-name { font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .report-title { font-size: 15px; color: #333; margin-top: 8px; }
+  .as-of { font-size: 11px; color: #666; margin-top: 4px; }
+  .confidential { color: #c0392b; font-size: 9px; font-weight: bold; letter-spacing: 1px; }
+
+  .page-break { page-break-before: always; }
+  .section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section-title { font-size: 13px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 2px solid {{branding.primaryColor}}; padding-bottom: 6px; margin-bottom: 14px; }
+  .sub-title { font-size: 12px; font-weight: bold; color: #444; margin: 15px 0 8px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+  td { padding: 7px 10px; border-bottom: 1px solid #eee; font-size: 10px; }
+  td.right, th.right { text-align: right; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; background: #f0f4ff; }
+
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0; }
+  .metric-box { background: #f8f9fa; padding: 15px; border-radius: 6px; text-align: center; border-left: 3px solid {{branding.primaryColor}}; }
+  .metric-value { font-size: 20px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .metric-label { font-size: 9px; color: #666; margin-top: 5px; text-transform: uppercase; }
+
+  .level-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; margin: 10px 0; }
+  .level-1 { background: #27763d; }
+  .level-2 { background: #f0ad4e; }
+  .level-3 { background: #5bc0de; }
+  .level-label { font-size: 9px; color: white; display: flex; align-items: center; justify-content: center; min-width: 40px; }
+  .level-legend { display: flex; gap: 20px; font-size: 10px; margin: 5px 0; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 4px; }
+
+  .company-card { background: #f8f9fa; border-radius: 6px; padding: 18px; margin: 15px 0; border-left: 3px solid {{branding.primaryColor}}; }
+  .company-name { font-size: 14px; font-weight: bold; color: {{branding.primaryColor}}; margin-bottom: 8px; }
+  .company-meta { font-size: 10px; color: #666; margin-bottom: 10px; }
+  .company-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0; }
+  .company-stat { text-align: center; }
+  .company-stat-value { font-size: 16px; font-weight: bold; color: #333; }
+  .company-stat-label { font-size: 9px; color: #666; }
+
+  .methodology-box { background: #f0f4ff; padding: 15px; border-radius: 6px; margin: 10px 0; font-size: 10px; line-height: 1.6; }
+
+  .footnotes { font-size: 8px; color: #999; margin-top: 20px; padding-top: 8px; border-top: 1px solid #eee; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="confidential">CONFIDENTIAL</div>
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="report-title">Portfolio Valuation Report</div>
+  <div class="as-of">As of {{asOfDate}} | Prepared {{preparedDate}}</div>
+</div>
+
+<!-- Portfolio Overview -->
+<div class="section">
+  <div class="section-title">Portfolio Overview</div>
+  <div class="metrics-grid">
+    <div class="metric-box"><div class="metric-value">${{formatNumber totalFairValue}}</div><div class="metric-label">Total Fair Value</div></div>
+    <div class="metric-box"><div class="metric-value">${{formatNumber totalCost}}</div><div class="metric-label">Total Cost</div></div>
+    <div class="metric-box"><div class="metric-value">{{grossMoic}}x</div><div class="metric-label">Gross MOIC</div></div>
+    <div class="metric-box"><div class="metric-value">{{activeCompanies}}</div><div class="metric-label">Active Companies</div></div>
+  </div>
+</div>
+
+<!-- Fair Value Hierarchy -->
+<div class="section">
+  <div class="section-title">Fair Value Hierarchy (ASC 820 / IFRS 13)</div>
+  <div class="level-bar">
+    <div class="level-1 level-label" style="width:{{level1Pct}}%">L1 {{level1Pct}}%</div>
+    <div class="level-2 level-label" style="width:{{level2Pct}}%">L2 {{level2Pct}}%</div>
+    <div class="level-3 level-label" style="width:{{level3Pct}}%">L3 {{level3Pct}}%</div>
+  </div>
+  <div class="level-legend">
+    <span><span class="legend-dot" style="background:#27763d"></span>Level 1: Quoted prices — ${{formatNumber level1Value}}</span>
+    <span><span class="legend-dot" style="background:#f0ad4e"></span>Level 2: Observable — ${{formatNumber level2Value}}</span>
+    <span><span class="legend-dot" style="background:#5bc0de"></span>Level 3: Unobservable — ${{formatNumber level3Value}}</span>
+  </div>
+
+  <table>
+    <tr><th>Company</th><th>Level</th><th>Methodology</th><th class="right">Cost</th><th class="right">Prior FV</th><th class="right">Current FV</th><th class="right">MOIC</th><th class="right">QoQ Change</th></tr>
+    {{#each companies}}
+    <tr>
+      <td><strong>{{name}}</strong></td><td>L{{level}}</td><td>{{methodology}}</td>
+      <td class="right">${{formatNumber cost}}</td><td class="right">${{formatNumber priorFairValue}}</td>
+      <td class="right">${{formatNumber currentFairValue}}</td><td class="right">{{moic}}x</td>
+      <td class="right" style="color:{{#if positive}}#27763d{{else}}#c0392b{{/if}}">${{formatNumber change}} ({{changePct}}%)</td>
+    </tr>
+    {{/each}}
+    <tr class="total-row">
+      <td colspan="3"><strong>Total Portfolio</strong></td>
+      <td class="right">${{formatNumber totalCost}}</td>
+      <td class="right">${{formatNumber priorTotalFV}}</td>
+      <td class="right">${{formatNumber totalFairValue}}</td>
+      <td class="right">{{grossMoic}}x</td>
+      <td class="right">${{formatNumber totalChange}}</td>
+    </tr>
+  </table>
+</div>
+
+<!-- Individual Company Valuations -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Company Valuation Detail</div>
+  {{#each companies}}
+  <div class="company-card">
+    <div class="company-name">{{name}}</div>
+    <div class="company-meta">{{sector}} | Invested: {{investmentDate}} | Round: {{round}} | Level {{level}}</div>
+    <div class="company-grid">
+      <div class="company-stat"><div class="company-stat-value">${{formatNumber cost}}</div><div class="company-stat-label">Cost Basis</div></div>
+      <div class="company-stat"><div class="company-stat-value">${{formatNumber currentFairValue}}</div><div class="company-stat-label">Fair Value</div></div>
+      <div class="company-stat"><div class="company-stat-value">{{moic}}x</div><div class="company-stat-label">MOIC</div></div>
+      <div class="company-stat"><div class="company-stat-value">{{irr}}%</div><div class="company-stat-label">IRR</div></div>
+    </div>
+    <div class="methodology-box">
+      <strong>Valuation Methodology:</strong> {{methodology}}<br>
+      {{#if valuationBasis}}<strong>Key Inputs:</strong> {{valuationBasis}}<br>{{/if}}
+      {{#if comparables}}<strong>Comparable Set:</strong> {{comparables}}<br>{{/if}}
+      {{#if keyMetric}}<strong>Key Operating Metric:</strong> {{keyMetric}}: {{keyMetricValue}}<br>{{/if}}
+      {{#if narrative}}<strong>Commentary:</strong> {{narrative}}{{/if}}
+    </div>
+  </div>
+  {{/each}}
+</div>
+
+<!-- Valuation Methodology -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Valuation Policy & Methodology</div>
+  <div class="methodology-box">
+    <p><strong>General Policy:</strong> The Fund values its investments in accordance with {{accountingStandard}} fair value
+    measurement standards (ASC 820 / IFRS 13) and the IPEV Valuation Guidelines. The General Partner's Valuation
+    Committee reviews all Level 3 valuations quarterly.</p>
+    <p><strong>Primary Methodologies:</strong></p>
+    <ul>
+      <li><strong>Recent Transaction Price:</strong> Used within 12 months of the most recent financing round, adjusted for material events.</li>
+      <li><strong>Market Comparables:</strong> Enterprise value multiples (EV/Revenue, EV/EBITDA) applied using public comparable sets, adjusted for size, growth, and liquidity discounts.</li>
+      <li><strong>Discounted Cash Flow (DCF):</strong> Used for mature companies with predictable cash flows; discount rates reflect company-specific risk.</li>
+      <li><strong>Precedent Transactions:</strong> M&A transaction multiples for comparable companies.</li>
+      <li><strong>Net Asset Value:</strong> Used for holding companies and real asset investments.</li>
+    </ul>
+    <p><strong>Discounts Applied:</strong> Marketability discounts (15-30%) and minority discounts (10-20%) are applied where appropriate to Level 3 investments.</p>
+  </div>
+</div>
+
+<div class="footnotes">
+  This Valuation Report is prepared by the General Partner and is subject to review by the Fund's independent auditor.
+  Valuations are estimates and may differ materially from amounts that would be realised in actual transactions.
+  Level 3 valuations involve significant judgement and rely on unobservable inputs.
+</div>
+
+</body>
+</html>
