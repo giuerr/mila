@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; margin: 0; padding: 0; font-size: 11px; line-height: 1.6; }
+  .header { border-bottom: 3px solid {{branding.primaryColor}}; padding-bottom: 15px; margin-bottom: 30px; }
+  .fund-name { font-size: 22px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .firm-name { font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .tax-year { font-size: 14px; color: #666; margin-top: 8px; }
+  .confidential { color: #c0392b; font-size: 9px; font-weight: bold; letter-spacing: 1px; }
+
+  .addressee { margin: 25px 0; font-size: 11px; }
+
+  .section { margin-bottom: 25px; }
+  .section-title { font-size: 13px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 12px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+  td { padding: 7px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
+  td.right { text-align: right; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; }
+
+  .deadline-box { background: #fff3f3; border: 1px solid #f5c6cb; border-radius: 6px; padding: 15px; margin: 20px 0; }
+  .deadline-box .title { color: #c0392b; font-weight: bold; margin-bottom: 6px; }
+
+  .info-box { background: #f8f9fa; padding: 18px; border-radius: 6px; margin: 15px 0; font-size: 11px; line-height: 1.6; }
+
+  .content { font-size: 11px; line-height: 1.7; }
+
+  .signature-block { margin-top: 40px; }
+  .signature-name { font-weight: bold; }
+  .signature-title { font-size: 10px; color: #666; }
+
+  .disclaimer { font-size: 9px; color: #999; margin-top: 30px; padding-top: 10px; border-top: 1px solid #eee; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="confidential">CONFIDENTIAL — TAX DOCUMENT</div>
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="tax-year">Schedule K-1 (Form 1065) — Tax Year {{taxYear}}</div>
+</div>
+
+<div class="addressee">
+  {{investorName}}<br>
+  {{investorAddress}}<br>
+  {{investorCityStateZip}}
+</div>
+
+<div class="content">
+  <p>Dear {{investorName}},</p>
+
+  <p>Enclosed please find your Schedule K-1 (Partner's Share of Income, Deductions, Credits, etc.)
+  for the tax year ended {{taxYearEnd}} for {{fundName}} (EIN: {{fundEin}}).</p>
+
+  <p>This K-1 reports your allocable share of the Fund's income, gain, loss, deductions, and credits
+  for the {{taxYear}} tax year. Please provide this document to your tax advisor for inclusion in your
+  {{taxYear}} tax return.</p>
+</div>
+
+<!-- K-1 Summary -->
+<div class="section">
+  <div class="section-title">K-1 Highlights</div>
+  <table>
+    <tr><td>Ordinary Business Income / (Loss) (Box 1)</td><td class="right">${{formatNumber k1.ordinaryIncome}}</td></tr>
+    <tr><td>Net Rental Income / (Loss) (Box 2)</td><td class="right">${{formatNumber k1.rentalIncome}}</td></tr>
+    <tr><td>Interest Income (Box 5)</td><td class="right">${{formatNumber k1.interestIncome}}</td></tr>
+    <tr><td>Ordinary Dividends (Box 6a)</td><td class="right">${{formatNumber k1.dividends}}</td></tr>
+    <tr><td>Qualified Dividends (Box 6b)</td><td class="right">${{formatNumber k1.qualifiedDividends}}</td></tr>
+    <tr><td>Net Short-Term Capital Gain / (Loss) (Box 8)</td><td class="right">${{formatNumber k1.shortTermCapGain}}</td></tr>
+    <tr><td>Net Long-Term Capital Gain / (Loss) (Box 9a)</td><td class="right">${{formatNumber k1.longTermCapGain}}</td></tr>
+    <tr><td>Section 199A Dividends (Box 20, Code Z)</td><td class="right">${{formatNumber k1.section199A}}</td></tr>
+    <tr><td>Foreign Taxes Paid (Box 16)</td><td class="right">${{formatNumber k1.foreignTaxesPaid}}</td></tr>
+    <tr><td>Tax-Exempt Income (Box 18)</td><td class="right">${{formatNumber k1.taxExemptIncome}}</td></tr>
+  </table>
+</div>
+
+<!-- Capital Account -->
+<div class="section">
+  <div class="section-title">Capital Account Summary</div>
+  <table>
+    <tr><td>Beginning Capital Account (Box L)</td><td class="right">${{formatNumber capital.beginning}}</td></tr>
+    <tr><td>Capital Contributed During Year</td><td class="right">${{formatNumber capital.contributed}}</td></tr>
+    <tr><td>Current Year Increase / (Decrease)</td><td class="right">${{formatNumber capital.currentYearChange}}</td></tr>
+    <tr><td>Withdrawals & Distributions</td><td class="right">(${{{formatNumber capital.distributions}}})</td></tr>
+    <tr class="total-row"><td>Ending Capital Account</td><td class="right">${{formatNumber capital.ending}}</td></tr>
+    <tr><td>Partner's Share of Liabilities</td><td class="right">${{formatNumber capital.shareOfLiabilities}}</td></tr>
+    <tr><td>Partner's Ownership Percentage</td><td class="right">{{capital.ownershipPct}}%</td></tr>
+  </table>
+</div>
+
+<!-- Filing Deadline -->
+<div class="deadline-box">
+  <div class="title">Filing Deadline</div>
+  The deadline for filing your {{taxYear}} federal income tax return is <strong>{{filingDeadline}}</strong>.
+  {{#if extensionAvailable}}
+  An automatic 6-month extension is available by filing Form 4868 by the original due date.
+  {{/if}}
+  State filing deadlines may differ — please consult your tax advisor.
+</div>
+
+<!-- Important Notes -->
+<div class="info-box">
+  <strong>Important Notes:</strong><br>
+  <ul style="margin: 5px 0; padding-left: 20px;">
+    <li>This K-1 was prepared on the <strong>{{taxBasis}}</strong> basis.</li>
+    {{#if hasStateK1s}}
+    <li>Separate state K-1s are enclosed for: {{stateK1List}}</li>
+    {{/if}}
+    {{#if hasAmendment}}
+    <li>This is an <strong>amended</strong> K-1, superseding the version dated {{priorK1Date}}.</li>
+    {{/if}}
+    <li>If you have questions, please contact {{contactName}} at {{contactEmail}}.</li>
+  </ul>
+</div>
+
+<div class="signature-block">
+  <p>Sincerely,</p>
+  <div class="signature-name">{{gpName}}</div>
+  <div class="signature-title">{{gpTitle}}</div>
+  <div class="signature-title">{{branding.firmName}}, General Partner</div>
+</div>
+
+<div class="disclaimer">
+  This K-1 cover letter is for informational purposes only and does not constitute tax advice.
+  The General Partner makes no representation regarding the tax consequences of any investment in the Fund.
+  Each partner should consult with their own tax advisor regarding the reporting of K-1 items on their
+  individual tax return. The K-1 is subject to adjustment in the event of an IRS audit or partnership-level adjustment.
+</div>
+
+</body>
+</html>

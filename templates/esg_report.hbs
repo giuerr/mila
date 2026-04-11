@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a2e; margin: 0; padding: 0; font-size: 11px; }
+  .cover { text-align: center; padding: 100px 40px; }
+  .cover .fund-name { font-size: 28px; font-weight: bold; color: #27763d; }
+  .cover .firm-name { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+  .cover .divider { width: 60px; height: 3px; background: #27763d; margin: 25px auto; }
+  .cover .report-title { font-size: 20px; color: #333; }
+  .cover .period { font-size: 13px; color: #666; margin-top: 8px; }
+
+  .page-break { page-break-before: always; }
+  .section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section-title { font-size: 14px; font-weight: bold; color: #27763d; border-bottom: 2px solid #27763d; padding-bottom: 6px; margin-bottom: 14px; }
+  .sub-title { font-size: 12px; font-weight: bold; color: #444; margin: 15px 0 8px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: #27763d; color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+  td { padding: 7px 10px; border-bottom: 1px solid #eee; font-size: 10px; }
+  td.right, th.right { text-align: right; }
+  .total-row td { font-weight: bold; border-top: 2px solid #27763d; background: #edf7ed; }
+
+  .esg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 18px 0; }
+  .esg-box { padding: 18px; border-radius: 8px; text-align: center; }
+  .esg-box.env { background: linear-gradient(135deg, #edf7ed 0%, #d4edda 100%); border-left: 4px solid #27763d; }
+  .esg-box.soc { background: linear-gradient(135deg, #e8f4fd 0%, #cce5ff 100%); border-left: 4px solid #0066cc; }
+  .esg-box.gov { background: linear-gradient(135deg, #fff8e6 0%, #ffeaa7 100%); border-left: 4px solid #cc8800; }
+  .esg-value { font-size: 28px; font-weight: bold; }
+  .esg-box.env .esg-value { color: #27763d; }
+  .esg-box.soc .esg-value { color: #0066cc; }
+  .esg-box.gov .esg-value { color: #cc8800; }
+  .esg-label { font-size: 11px; color: #666; margin-top: 5px; }
+  .esg-rating { font-size: 13px; font-weight: bold; margin-top: 3px; }
+
+  .carbon-summary { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 15px 0; }
+  .carbon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .carbon-stat { text-align: center; }
+  .carbon-value { font-size: 18px; font-weight: bold; color: #27763d; }
+  .carbon-label { font-size: 9px; color: #666; margin-top: 4px; }
+
+  .dei-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+  .dei-female { background: #e83e8c; }
+  .dei-male { background: #007bff; }
+  .dei-label { color: white; font-size: 9px; display: flex; align-items: center; justify-content: center; }
+
+  .sfdr-badge { display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+  .sfdr-6 { background: #e9ecef; color: #495057; }
+  .sfdr-8 { background: #d4edda; color: #155724; }
+  .sfdr-9 { background: #155724; color: white; }
+
+  .content { font-size: 11px; line-height: 1.7; }
+  .footnotes { font-size: 8px; color: #999; margin-top: 20px; padding-top: 8px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="divider"></div>
+  <div class="report-title">ESG & Impact Report</div>
+  <div class="period">{{reportingPeriod}}</div>
+</div>
+
+<!-- ESG Scorecard -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Portfolio ESG Scorecard</div>
+  <div class="esg-grid">
+    <div class="esg-box env"><div class="esg-value">{{scores.environmental}}</div><div class="esg-label">Environmental</div><div class="esg-rating">{{ratings.environmental}}</div></div>
+    <div class="esg-box soc"><div class="esg-value">{{scores.social}}</div><div class="esg-label">Social</div><div class="esg-rating">{{ratings.social}}</div></div>
+    <div class="esg-box gov"><div class="esg-value">{{scores.governance}}</div><div class="esg-label">Governance</div><div class="esg-rating">{{ratings.governance}}</div></div>
+  </div>
+  <div style="text-align:center; font-size: 16px; font-weight: bold; color: #27763d; margin: 15px 0;">
+    Portfolio Rating: {{portfolioRating}} ({{portfolioScore}}/100)
+  </div>
+  <table>
+    <tr><th>Company</th><th class="right">E</th><th class="right">S</th><th class="right">G</th><th class="right">Total</th><th>Rating</th><th class="right">Data %</th></tr>
+    {{#each companies}}
+    <tr>
+      <td><strong>{{name}}</strong></td>
+      <td class="right">{{environmental}}</td><td class="right">{{social}}</td><td class="right">{{governance}}</td>
+      <td class="right">{{total}}</td><td>{{rating}}</td><td class="right">{{dataCompleteness}}%</td>
+    </tr>
+    {{/each}}
+  </table>
+</div>
+
+<!-- Carbon Footprint -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Carbon Footprint & Climate Metrics</div>
+  <div class="carbon-summary">
+    <div class="carbon-grid">
+      <div class="carbon-stat"><div class="carbon-value">{{carbon.scope1}}</div><div class="carbon-label">Scope 1 (tCO2e)</div></div>
+      <div class="carbon-stat"><div class="carbon-value">{{carbon.scope2}}</div><div class="carbon-label">Scope 2 (tCO2e)</div></div>
+      <div class="carbon-stat"><div class="carbon-value">{{carbon.scope3}}</div><div class="carbon-label">Scope 3 (tCO2e)</div></div>
+      <div class="carbon-stat"><div class="carbon-value">{{carbon.intensity}}</div><div class="carbon-label">Intensity (tCO2e/$M)</div></div>
+    </div>
+  </div>
+  <table>
+    <tr><th>Company</th><th class="right">Scope 1</th><th class="right">Scope 2</th><th class="right">Scope 3</th><th class="right">Total</th><th class="right">Intensity</th><th>SBT</th></tr>
+    {{#each carbonByCompany}}
+    <tr>
+      <td>{{name}}</td>
+      <td class="right">{{scope1}}</td><td class="right">{{scope2}}</td><td class="right">{{scope3}}</td>
+      <td class="right">{{total}}</td><td class="right">{{intensity}}</td>
+      <td>{{#if sbt}}Yes{{else}}No{{/if}}</td>
+    </tr>
+    {{/each}}
+  </table>
+</div>
+
+<!-- DEI -->
+<div class="section">
+  <div class="section-title">Diversity, Equity & Inclusion</div>
+  <div class="sub-title">Firm Level</div>
+  <table>
+    <tr><td>Total Employees</td><td class="right">{{dei.totalEmployees}}</td></tr>
+    <tr><td>Female Representation (Overall)</td><td class="right">{{dei.femalePct}}%</td></tr>
+    <tr><td>Female — Senior Leadership</td><td class="right">{{dei.seniorFemalePct}}%</td></tr>
+    <tr><td>Female — Investment Team</td><td class="right">{{dei.investmentFemalePct}}%</td></tr>
+  </table>
+  <div class="sub-title">Gender Diversity — Investment Team</div>
+  <div class="dei-bar">
+    <div class="dei-female dei-label" style="width:{{dei.investmentFemalePct}}%">{{dei.investmentFemalePct}}% F</div>
+    <div class="dei-male dei-label" style="width:{{dei.investmentMalePct}}%">{{dei.investmentMalePct}}% M</div>
+  </div>
+  <div style="font-size: 10px; color: #666; margin-top: 4px;">ILPA Benchmark: Industry avg female investment team = 21%</div>
+</div>
+
+<!-- SFDR (if applicable) -->
+{{#if sfdr}}
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">SFDR Disclosure</div>
+  <div style="margin-bottom: 15px;">
+    <strong>SFDR Classification:</strong>
+    <span class="sfdr-badge sfdr-{{sfdr.articleNumber}}">Article {{sfdr.articleNumber}}</span>
+  </div>
+  {{#if sfdr.sustainableInvestmentPct}}
+  <table>
+    <tr><td>Sustainable Investment %</td><td class="right">{{sfdr.sustainableInvestmentPct}}%</td></tr>
+    <tr><td>Taxonomy-Aligned %</td><td class="right">{{sfdr.taxonomyAlignedPct}}%</td></tr>
+    <tr><td>DNSH Compliance</td><td class="right">{{sfdr.dnshCompliance}}</td></tr>
+  </table>
+  {{/if}}
+  {{#if sfdr.paiIndicators}}
+  <div class="sub-title">Principal Adverse Impacts (PAI)</div>
+  <table>
+    <tr><th>Indicator</th><th>Metric</th><th class="right">Value</th><th>Unit</th></tr>
+    {{#each sfdr.paiIndicators}}
+    <tr><td>{{name}}</td><td>{{metric}}</td><td class="right">{{value}}</td><td>{{unit}}</td></tr>
+    {{/each}}
+  </table>
+  {{/if}}
+</div>
+{{/if}}
+
+<!-- ESG Integration -->
+<div class="section">
+  <div class="section-title">ESG Integration Approach</div>
+  <div class="content">{{{esgApproach}}}</div>
+</div>
+
+<!-- Engagement -->
+{{#if engagementActivities}}
+<div class="section">
+  <div class="section-title">Engagement & Stewardship</div>
+  <table>
+    <tr><th>Company</th><th>Topic</th><th>Action</th><th>Outcome</th></tr>
+    {{#each engagementActivities}}
+    <tr><td>{{company}}</td><td>{{topic}}</td><td>{{action}}</td><td>{{outcome}}</td></tr>
+    {{/each}}
+  </table>
+</div>
+{{/if}}
+
+<div class="footnotes">
+  This ESG & Impact Report is prepared by {{branding.firmName}} for the limited partners of {{fundName}}.
+  ESG data is collected from portfolio companies and may be estimated where company-reported data is not available.
+  Carbon metrics follow the PCAF (Partnership for Carbon Accounting Financials) methodology where applicable.
+  SFDR disclosures comply with Commission Delegated Regulation (EU) 2022/1288.
+</div>
+
+</body>
+</html>

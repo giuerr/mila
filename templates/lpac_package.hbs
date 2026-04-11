@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a2e; margin: 0; padding: 0; font-size: 11px; }
+  .cover { text-align: center; padding: 100px 40px; }
+  .cover .fund-name { font-size: 28px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .cover .firm-name { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+  .cover .divider { width: 60px; height: 3px; background: {{branding.secondaryColor}}; margin: 25px auto; }
+  .cover .report-title { font-size: 18px; color: #333; }
+  .cover .period { font-size: 13px; color: #666; margin-top: 8px; }
+  .cover .classification { font-size: 11px; color: #c0392b; margin-top: 30px; font-weight: bold; letter-spacing: 1px; }
+
+  .page-break { page-break-before: always; }
+  .section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section-title { font-size: 14px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 2px solid {{branding.primaryColor}}; padding-bottom: 6px; margin-bottom: 14px; }
+  .sub-title { font-size: 12px; font-weight: bold; color: #444; margin: 15px 0 8px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+  td { padding: 7px 10px; border-bottom: 1px solid #eee; font-size: 10px; }
+  td.right, th.right { text-align: right; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; background: #f0f4ff; }
+
+  .conflict-box { background: #fff3f3; border: 1px solid #f5c6cb; border-radius: 6px; padding: 18px; margin: 15px 0; }
+  .conflict-title { color: #c0392b; font-weight: bold; font-size: 12px; margin-bottom: 8px; }
+  .conflict-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; }
+
+  .vote-box { background: #edf7ed; border: 1px solid #c3e6cb; border-radius: 6px; padding: 15px; margin: 15px 0; }
+  .vote-title { color: #155724; font-weight: bold; margin-bottom: 8px; }
+
+  .action-item { background: #fffbe6; border-left: 3px solid {{branding.secondaryColor}}; padding: 10px 15px; margin: 8px 0; font-size: 11px; }
+
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0; }
+  .metric-box { background: #f8f9fa; padding: 15px; border-radius: 6px; text-align: center; border-left: 3px solid {{branding.primaryColor}}; }
+  .metric-value { font-size: 20px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .metric-label { font-size: 9px; color: #666; margin-top: 5px; text-transform: uppercase; }
+
+  .content { font-size: 11px; line-height: 1.7; }
+  .footnotes { font-size: 8px; color: #999; margin-top: 20px; padding-top: 8px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="divider"></div>
+  <div class="report-title">LPAC Meeting Package</div>
+  <div class="period">Meeting Date: {{meetingDate}} | {{period}}</div>
+  <div class="classification">CONFIDENTIAL — LPAC MEMBERS ONLY</div>
+</div>
+
+<!-- Agenda -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Agenda</div>
+  {{#each agendaItems}}
+  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px;">
+    <span><strong>{{@index}}.</strong> {{title}}</span>
+    <span style="color: #999">{{duration}} min</span>
+  </div>
+  {{/each}}
+</div>
+
+<!-- Executive Summary -->
+<div class="section">
+  <div class="section-title">Executive Summary</div>
+  <div class="metrics-grid">
+    <div class="metric-box"><div class="metric-value">{{netIrr}}%</div><div class="metric-label">Net IRR</div></div>
+    <div class="metric-box"><div class="metric-value">{{tvpi}}x</div><div class="metric-label">TVPI</div></div>
+    <div class="metric-box"><div class="metric-value">{{dpi}}x</div><div class="metric-label">DPI</div></div>
+    <div class="metric-box"><div class="metric-value">${{formatNumber nav}}</div><div class="metric-label">NAV</div></div>
+  </div>
+  <div class="content">{{{executiveSummary}}}</div>
+</div>
+
+<!-- Conflicts of Interest -->
+{{#if conflicts}}
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Conflicts of Interest — LPAC Approval Requested</div>
+  {{#each conflicts}}
+  <div class="conflict-box">
+    <div class="conflict-title">{{title}}</div>
+    <div class="conflict-row"><span>Type:</span><span>{{type}}</span></div>
+    <div class="conflict-row"><span>LPA Reference:</span><span>{{lpaSection}}</span></div>
+    <div class="conflict-row"><span>Financial Impact:</span><span>{{financialImpact}}</span></div>
+    <div style="margin-top: 10px; font-size: 11px;">{{{description}}}</div>
+    <div style="margin-top: 10px; font-size: 11px;"><strong>Mitigation:</strong> {{mitigation}}</div>
+    <div style="margin-top: 10px; font-size: 11px;"><strong>GP Recommendation:</strong> {{recommendation}}</div>
+  </div>
+  {{/each}}
+
+  <div class="vote-box">
+    <div class="vote-title">LPAC Vote Required</div>
+    Please indicate your approval or disapproval of the above conflict matter(s). A majority vote of
+    LPAC members is required for approval. Please respond by {{voteDeadline}}.
+  </div>
+</div>
+{{/if}}
+
+<!-- Valuation Summary -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-title">Valuation Summary</div>
+  <table>
+    <tr><th>Company</th><th>Method</th><th class="right">Cost</th><th class="right">Prior FV</th><th class="right">Current FV</th><th class="right">Change</th><th>Level</th></tr>
+    {{#each valuations}}
+    <tr>
+      <td><strong>{{name}}</strong></td><td>{{method}}</td>
+      <td class="right">${{formatNumber cost}}</td><td class="right">${{formatNumber priorFairValue}}</td>
+      <td class="right">${{formatNumber currentFairValue}}</td>
+      <td class="right" style="color:{{#if positive}}#27763d{{else}}#c0392b{{/if}}">${{formatNumber change}}</td>
+      <td>L{{level}}</td>
+    </tr>
+    {{/each}}
+    <tr class="total-row">
+      <td colspan="2"><strong>Total</strong></td>
+      <td class="right">${{formatNumber valuationTotals.totalCost}}</td>
+      <td class="right">${{formatNumber valuationTotals.priorTotal}}</td>
+      <td class="right">${{formatNumber valuationTotals.currentTotal}}</td>
+      <td class="right">${{formatNumber valuationTotals.totalChange}}</td><td></td>
+    </tr>
+  </table>
+</div>
+
+<!-- Compliance Update -->
+<div class="section">
+  <div class="section-title">Compliance & Regulatory Update</div>
+  <div class="content">{{{complianceUpdate}}}</div>
+</div>
+
+<!-- Key Person & Team -->
+{{#if teamUpdates}}
+<div class="section">
+  <div class="section-title">Key Person & Team Updates</div>
+  <div class="content">{{{teamUpdates}}}</div>
+</div>
+{{/if}}
+
+<!-- Action Items -->
+<div class="section">
+  <div class="section-title">Action Items</div>
+  {{#each actionItems}}
+  <div class="action-item"><strong>{{owner}}:</strong> {{description}} — Due: {{dueDate}}</div>
+  {{/each}}
+</div>
+
+<!-- Next Meeting -->
+<div class="section">
+  <div class="section-title">Next Meeting</div>
+  <div class="content">The next LPAC meeting is scheduled for <strong>{{nextMeetingDate}}</strong>. Materials will be circulated {{materialsDays}} business days in advance.</div>
+</div>
+
+<div class="footnotes">
+  This LPAC Package is confidential and prepared solely for the members of the Limited Partner Advisory Committee
+  of {{fundName}}. All data is unaudited and based on the General Partner's estimates.
+</div>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a2e; margin: 0; padding: 0; font-size: 10px; }
+  .cover { text-align: center; padding: 120px 40px; }
+  .cover .fund-name { font-size: 32px; font-weight: bold; color: {{branding.primaryColor}}; letter-spacing: 1px; }
+  .cover .firm-name { font-size: 14px; color: #888; margin-top: 8px; letter-spacing: 2px; text-transform: uppercase; }
+  .cover .report-title { font-size: 20px; color: #333; margin-top: 40px; }
+  .cover .period { font-size: 14px; color: #666; margin-top: 10px; }
+  .cover .divider { width: 80px; height: 3px; background: {{branding.primaryColor}}; margin: 30px auto; }
+  .cover .status { font-size: 12px; color: #999; margin-top: 20px; }
+
+  .page-break { page-break-before: always; }
+  .section { margin-bottom: 30px; page-break-inside: avoid; }
+  .section-title { font-size: 14px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 2px solid {{branding.primaryColor}}; padding-bottom: 6px; margin-bottom: 15px; }
+  .sub-title { font-size: 11px; font-weight: bold; color: #444; margin: 12px 0 8px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  th { background: #f8f9fa; color: {{branding.primaryColor}}; padding: 7px 10px; text-align: left; font-size: 9px; text-transform: uppercase; border-bottom: 2px solid {{branding.primaryColor}}; }
+  td { padding: 5px 10px; border-bottom: 1px solid #eee; font-size: 10px; }
+  td.right, th.right { text-align: right; }
+  td.indent { padding-left: 25px; }
+  td.indent-2 { padding-left: 40px; }
+  .total-row td { font-weight: bold; border-top: 2px solid #333; border-bottom: 2px solid #333; }
+  .subtotal-row td { font-weight: 600; border-top: 1px solid #999; }
+  .blank-row td { border-bottom: none; height: 10px; }
+
+  .note { font-size: 9px; color: #666; margin: 10px 0; line-height: 1.5; }
+  .note-ref { font-size: 8px; vertical-align: super; color: {{branding.primaryColor}}; }
+
+  .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 20px; }
+  .header-bar .left { font-size: 12px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .header-bar .right { font-size: 10px; color: #999; }
+
+  .footnotes { font-size: 8px; color: #999; margin-top: 20px; padding-top: 8px; border-top: 1px solid #eee; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<!-- Cover Page -->
+<div class="cover">
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="divider"></div>
+  <div class="report-title">Financial Statements</div>
+  <div class="period">For the {{#if isAnnual}}Year{{else}}Period{{/if}} Ended {{periodEnd}}</div>
+  <div class="status">{{#if audited}}Audited{{else}}Unaudited{{/if}} — Prepared in accordance with {{accountingStandard}}</div>
+</div>
+
+<!-- Statement of Assets & Liabilities (Balance Sheet) -->
+<div class="page-break"></div>
+<div class="header-bar">
+  <span class="left">{{fundName}}</span>
+  <span class="right">As of {{periodEnd}}</span>
+</div>
+
+<div class="section">
+  <div class="section-title">Statement of Assets and Liabilities</div>
+  <table>
+    <tr><th colspan="2">Assets</th></tr>
+    <tr><td class="indent">Investments at fair value <span class="note-ref">(1)</span></td><td class="right">${{formatNumber assets.investmentsFairValue}}</td></tr>
+    <tr><td class="indent-2">Level 1 — Quoted prices</td><td class="right">${{formatNumber assets.level1}}</td></tr>
+    <tr><td class="indent-2">Level 2 — Observable inputs</td><td class="right">${{formatNumber assets.level2}}</td></tr>
+    <tr><td class="indent-2">Level 3 — Unobservable inputs</td><td class="right">${{formatNumber assets.level3}}</td></tr>
+    <tr><td class="indent">Cash and cash equivalents</td><td class="right">${{formatNumber assets.cash}}</td></tr>
+    <tr><td class="indent">Interest and dividends receivable</td><td class="right">${{formatNumber assets.receivables}}</td></tr>
+    <tr><td class="indent">Due from broker</td><td class="right">${{formatNumber assets.dueFromBroker}}</td></tr>
+    <tr><td class="indent">Deferred organisation costs</td><td class="right">${{formatNumber assets.deferredOrgCosts}}</td></tr>
+    <tr><td class="indent">Other assets</td><td class="right">${{formatNumber assets.otherAssets}}</td></tr>
+    <tr class="subtotal-row"><td><strong>Total Assets</strong></td><td class="right"><strong>${{formatNumber assets.totalAssets}}</strong></td></tr>
+
+    <tr class="blank-row"><td colspan="2"></td></tr>
+    <tr><th colspan="2">Liabilities</th></tr>
+    <tr><td class="indent">Credit facility payable</td><td class="right">${{formatNumber liabilities.creditFacility}}</td></tr>
+    <tr><td class="indent">Accrued management fees</td><td class="right">${{formatNumber liabilities.accruedMgmtFees}}</td></tr>
+    <tr><td class="indent">Accrued performance allocation</td><td class="right">${{formatNumber liabilities.accruedCarry}}</td></tr>
+    <tr><td class="indent">Distributions payable</td><td class="right">${{formatNumber liabilities.distributionsPayable}}</td></tr>
+    <tr><td class="indent">Accounts payable and accrued expenses</td><td class="right">${{formatNumber liabilities.accountsPayable}}</td></tr>
+    <tr><td class="indent">Other liabilities</td><td class="right">${{formatNumber liabilities.otherLiabilities}}</td></tr>
+    <tr class="subtotal-row"><td><strong>Total Liabilities</strong></td><td class="right"><strong>${{formatNumber liabilities.totalLiabilities}}</strong></td></tr>
+
+    <tr class="blank-row"><td colspan="2"></td></tr>
+    <tr class="total-row"><td><strong>Partners' Capital (Net Assets)</strong></td><td class="right"><strong>${{formatNumber partnersCapital}}</strong></td></tr>
+  </table>
+</div>
+
+<!-- Statement of Operations (Income Statement) -->
+<div class="page-break"></div>
+<div class="header-bar">
+  <span class="left">{{fundName}}</span>
+  <span class="right">{{#if isAnnual}}Year{{else}}Period{{/if}} Ended {{periodEnd}}</span>
+</div>
+
+<div class="section">
+  <div class="section-title">Statement of Operations</div>
+  <table>
+    <tr><th colspan="2">Investment Income</th></tr>
+    <tr><td class="indent">Interest income</td><td class="right">${{formatNumber income.interestIncome}}</td></tr>
+    <tr><td class="indent">Dividend income</td><td class="right">${{formatNumber income.dividendIncome}}</td></tr>
+    <tr><td class="indent">Other income</td><td class="right">${{formatNumber income.otherIncome}}</td></tr>
+    <tr class="subtotal-row"><td><strong>Total Investment Income</strong></td><td class="right"><strong>${{formatNumber income.totalIncome}}</strong></td></tr>
+
+    <tr class="blank-row"><td colspan="2"></td></tr>
+    <tr><th colspan="2">Operating Expenses</th></tr>
+    <tr><td class="indent">Management fees</td><td class="right">${{formatNumber expenses.managementFees}}</td></tr>
+    <tr><td class="indent">Audit and tax preparation</td><td class="right">${{formatNumber expenses.auditTax}}</td></tr>
+    <tr><td class="indent">Legal fees</td><td class="right">${{formatNumber expenses.legalFees}}</td></tr>
+    <tr><td class="indent">Administration fees</td><td class="right">${{formatNumber expenses.adminFees}}</td></tr>
+    <tr><td class="indent">Insurance</td><td class="right">${{formatNumber expenses.insurance}}</td></tr>
+    <tr><td class="indent">Credit facility interest</td><td class="right">${{formatNumber expenses.creditFacilityInterest}}</td></tr>
+    <tr><td class="indent">Organisational expense amortisation</td><td class="right">${{formatNumber expenses.orgExpAmortisation}}</td></tr>
+    <tr><td class="indent">Other expenses</td><td class="right">${{formatNumber expenses.otherExpenses}}</td></tr>
+    <tr class="subtotal-row"><td><strong>Total Operating Expenses</strong></td><td class="right"><strong>${{formatNumber expenses.totalExpenses}}</strong></td></tr>
+
+    <tr class="blank-row"><td colspan="2"></td></tr>
+    <tr><td><strong>Net Investment Income / (Loss)</strong></td><td class="right"><strong>${{formatNumber netInvestmentIncome}}</strong></td></tr>
+
+    <tr class="blank-row"><td colspan="2"></td></tr>
+    <tr><th colspan="2">Realised and Unrealised Gains / (Losses)</th></tr>
+    <tr><td class="indent">Net realised gain / (loss) on investments</td><td class="right">${{formatNumber gains.realisedInvestments}}</td></tr>
+    <tr><td class="indent">Net realised gain / (loss) on foreign currency</td><td class="right">${{formatNumber gains.realisedFx}}</td></tr>
+    <tr><td class="indent">Net change in unrealised appreciation / (depreciation)</td><td class="right">${{formatNumber gains.unrealisedChange}}</td></tr>
+    <tr class="subtotal-row"><td><strong>Net Realised and Unrealised Gains / (Losses)</strong></td><td class="right"><strong>${{formatNumber gains.totalGains}}</strong></td></tr>
+
+    <tr class="blank-row"><td colspan="2"></td></tr>
+    <tr><td><strong>Performance Allocation (Carried Interest)</strong></td><td class="right">(${{{formatNumber performanceAllocation}}})</td></tr>
+
+    <tr class="blank-row"><td colspan="2"></td></tr>
+    <tr class="total-row"><td><strong>Net Increase / (Decrease) in Partners' Capital</strong></td><td class="right"><strong>${{formatNumber netIncrease}}</strong></td></tr>
+  </table>
+</div>
+
+<!-- Statement of Changes in Partners' Capital -->
+<div class="page-break"></div>
+<div class="header-bar">
+  <span class="left">{{fundName}}</span>
+  <span class="right">{{#if isAnnual}}Year{{else}}Period{{/if}} Ended {{periodEnd}}</span>
+</div>
+
+<div class="section">
+  <div class="section-title">Statement of Changes in Partners' Capital</div>
+  <table>
+    <tr>
+      <th>Partner</th>
+      <th class="right">Beginning Balance</th>
+      <th class="right">Contributions</th>
+      <th class="right">Distributions</th>
+      <th class="right">Net Income Allocation</th>
+      <th class="right">Ending Balance</th>
+    </tr>
+    {{#each partners}}
+    <tr>
+      <td>{{name}}</td>
+      <td class="right">${{formatNumber beginningBalance}}</td>
+      <td class="right">${{formatNumber contributions}}</td>
+      <td class="right">(${{{formatNumber distributions}}})</td>
+      <td class="right">${{formatNumber netIncomeAllocation}}</td>
+      <td class="right">${{formatNumber endingBalance}}</td>
+    </tr>
+    {{/each}}
+    <tr class="total-row">
+      <td><strong>Total</strong></td>
+      <td class="right">${{formatNumber partnersTotals.beginningBalance}}</td>
+      <td class="right">${{formatNumber partnersTotals.contributions}}</td>
+      <td class="right">(${{{formatNumber partnersTotals.distributions}}})</td>
+      <td class="right">${{formatNumber partnersTotals.netIncomeAllocation}}</td>
+      <td class="right">${{formatNumber partnersCapital}}</td>
+    </tr>
+  </table>
+</div>
+
+<!-- Notes to Financial Statements -->
+<div class="page-break"></div>
+<div class="header-bar">
+  <span class="left">{{fundName}}</span>
+  <span class="right">Notes to Financial Statements</span>
+</div>
+
+<div class="section">
+  <div class="section-title">Notes to Financial Statements</div>
+
+  <div class="sub-title">1. Organisation and Purpose</div>
+  <div class="note">{{fundName}} (the "Fund") is a {{vehicleType}} organised under the laws of {{jurisdiction}}
+  on {{formationDate}}. The Fund's primary objective is {{investmentObjective}}. The General Partner of the
+  Fund is {{gpName}}.</div>
+
+  <div class="sub-title">2. Summary of Significant Accounting Policies</div>
+  <div class="note"><strong>Basis of Presentation:</strong> These financial statements have been prepared in accordance
+  with {{accountingStandard}}. <strong>Investments:</strong> Investments are carried at fair value in accordance
+  with ASC 820 / IFRS 13. <strong>Revenue Recognition:</strong> Interest income is recorded on an accrual basis.
+  Dividend income is recorded on the ex-dividend date. <strong>Foreign Currency:</strong> Transactions denominated
+  in foreign currencies are translated at exchange rates prevailing at the transaction date.</div>
+
+  <div class="sub-title">3. Fair Value Measurements</div>
+  <div class="note">The Fund classifies fair value measurements within a three-level hierarchy: Level 1 (quoted prices
+  in active markets), Level 2 (observable inputs other than quoted prices), Level 3 (unobservable inputs).
+  As of {{periodEnd}}, {{assets.level3Pct}}% of total investments are classified as Level 3.</div>
+
+  <div class="sub-title">4. Partners' Capital</div>
+  <div class="note">The Fund has total commitments of ${{formatNumber totalCommitments}} from {{investorCount}} limited partners.
+  As of {{periodEnd}}, ${{formatNumber totalCalled}} ({{pctCalled}}%) has been called. The General Partner has committed
+  ${{formatNumber gpCommitment}} ({{gpCommitPct}}% of total commitments).</div>
+
+  <div class="sub-title">5. Management Fee and Performance Allocation</div>
+  <div class="note">The General Partner receives a management fee of {{mgmtFeeRate}}% per annum during the investment period
+  (based on {{mgmtFeeBasis}}) and {{mgmtFeeRatePost}}% per annum thereafter (based on invested capital).
+  The General Partner is entitled to a performance allocation of {{carryRate}}% of profits, subject to a
+  {{prefReturnRate}}% preferred return to the limited partners ({{waterfallType}} waterfall).</div>
+
+  <div class="sub-title">6. Credit Facility</div>
+  <div class="note">The Fund maintains a revolving credit facility with {{creditFacilityBank}} with a maximum commitment
+  of ${{formatNumber creditFacilityMax}}. As of {{periodEnd}}, ${{formatNumber liabilities.creditFacility}} was outstanding
+  at an interest rate of {{creditFacilityRate}}%.</div>
+
+  {{#if subsequentEvents}}
+  <div class="sub-title">7. Subsequent Events</div>
+  <div class="note">{{subsequentEvents}}</div>
+  {{/if}}
+</div>
+
+<div class="footnotes">
+  {{#if audited}}
+  These financial statements have been audited by {{auditor}} in accordance with {{auditStandard}}.
+  The auditor's report is attached separately.
+  {{else}}
+  These financial statements are unaudited and subject to adjustment upon completion of the annual audit.
+  {{/if}}
+</div>
+
+</body>
+</html>

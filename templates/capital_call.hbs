@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @page { margin: 60px 40px; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; margin: 0; padding: 0; font-size: 11px; }
+  .header { border-bottom: 3px solid {{branding.primaryColor}}; padding-bottom: 15px; margin-bottom: 25px; }
+  .fund-name { font-size: 22px; font-weight: bold; color: {{branding.primaryColor}}; }
+  .firm-name { font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .notice-type { font-size: 16px; color: {{branding.primaryColor}}; font-weight: bold; margin-top: 10px; letter-spacing: 0.5px; }
+  .call-number { font-size: 12px; color: #666; }
+  .date-line { font-size: 11px; color: #999; margin-top: 4px; }
+
+  .summary-box { background: linear-gradient(135deg, #f0f4ff 0%, #e8edf6 100%); padding: 22px; border-radius: 8px; margin: 22px 0; border-left: 4px solid {{branding.primaryColor}}; }
+  .summary-row { display: flex; justify-content: space-between; margin: 6px 0; font-size: 12px; }
+  .summary-label { color: #555; }
+  .summary-value { font-weight: bold; color: #1a1a2e; }
+  .summary-value.important { color: #c0392b; font-size: 14px; }
+
+  .section { margin-bottom: 25px; page-break-inside: avoid; }
+  .section-title { font-size: 13px; font-weight: bold; color: {{branding.primaryColor}}; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th { background: {{branding.primaryColor}}; color: white; padding: 9px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; }
+  td { padding: 8px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
+  tr:nth-child(even) { background: #fafbfc; }
+  .total-row td { font-weight: bold; border-top: 2px solid {{branding.primaryColor}}; background: #f0f4ff; }
+  td.right, th.right { text-align: right; }
+
+  .call-breakdown { background: #f8f9fa; padding: 18px; border-radius: 6px; margin: 15px 0; }
+  .breakdown-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; }
+  .breakdown-row.total { border-top: 2px solid {{branding.primaryColor}}; border-bottom: none; font-weight: bold; padding-top: 10px; margin-top: 5px; }
+
+  .wire-box { border: 2px solid {{branding.primaryColor}}; padding: 18px; margin-top: 25px; border-radius: 6px; }
+  .wire-title { font-size: 13px; font-weight: bold; color: {{branding.primaryColor}}; margin-bottom: 10px; }
+  .wire-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; }
+  .wire-label { color: #666; width: 35%; }
+  .wire-value { font-weight: 500; width: 65%; }
+
+  .important-notice { background: #fff3f3; border: 1px solid #f5c6cb; border-radius: 6px; padding: 15px; margin: 20px 0; }
+  .important-notice .title { color: #c0392b; font-weight: bold; font-size: 12px; margin-bottom: 6px; }
+
+  .footnotes { font-size: 9px; color: #999; margin-top: 25px; padding-top: 10px; border-top: 1px solid #eee; line-height: 1.5; }
+  .confidential { color: #c0392b; font-size: 9px; font-weight: bold; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="confidential">CONFIDENTIAL</div>
+  <div class="fund-name">{{fundName}}</div>
+  <div class="firm-name">{{branding.firmName}}</div>
+  <div class="notice-type">CAPITAL CALL NOTICE</div>
+  <div class="call-number">Call #{{callNumber}} | Notice Date: {{noticeDate}}</div>
+</div>
+
+<!-- Summary -->
+<div class="summary-box">
+  <div class="summary-row"><span class="summary-label">Total Call Amount</span><span class="summary-value" style="font-size:16px">${{formatNumber totalAmount}}</span></div>
+  <div class="summary-row"><span class="summary-label">Payment Due Date</span><span class="summary-value important">{{dueDate}}</span></div>
+  <div class="summary-row"><span class="summary-label">Default Date</span><span class="summary-value">{{defaultDate}}</span></div>
+  <div class="summary-row"><span class="summary-label">Call Purpose</span><span class="summary-value">{{purpose}}</span></div>
+  {{#if investmentName}}
+  <div class="summary-row"><span class="summary-label">Investment</span><span class="summary-value">{{investmentName}}</span></div>
+  {{/if}}
+</div>
+
+<!-- Call Breakdown -->
+<div class="section">
+  <div class="section-title">Call Breakdown</div>
+  <div class="call-breakdown">
+    <div class="breakdown-row"><span>Investment Capital</span><span>${{formatNumber breakdown.investmentCapital}}</span></div>
+    <div class="breakdown-row"><span>Management Fees</span><span>${{formatNumber breakdown.managementFees}}</span></div>
+    <div class="breakdown-row"><span>Organizational Expenses</span><span>${{formatNumber breakdown.orgExpenses}}</span></div>
+    <div class="breakdown-row"><span>Fund Expenses</span><span>${{formatNumber breakdown.fundExpenses}}</span></div>
+    {{#if breakdown.creditLinePrincipal}}
+    <div class="breakdown-row"><span>Credit Line Repayment</span><span>${{formatNumber breakdown.creditLinePrincipal}}</span></div>
+    {{/if}}
+    {{#if breakdown.creditLineInterest}}
+    <div class="breakdown-row"><span>Credit Line Interest</span><span>${{formatNumber breakdown.creditLineInterest}}</span></div>
+    {{/if}}
+    <div class="breakdown-row total"><span>Total Capital Call</span><span>${{formatNumber totalAmount}}</span></div>
+  </div>
+</div>
+
+<!-- Investor Allocation Table -->
+<div class="section">
+  <div class="section-title">Investor Allocation</div>
+  <table>
+    <tr>
+      <th>Investor</th>
+      <th class="right">Commitment</th>
+      <th class="right">This Call</th>
+      <th class="right">Prior Called</th>
+      <th class="right">Cumulative Called</th>
+      <th class="right">% Called</th>
+      <th class="right">Unfunded</th>
+    </tr>
+    {{#each investors}}
+    <tr>
+      <td>{{name}}</td>
+      <td class="right">${{formatNumber commitment}}</td>
+      <td class="right"><strong>${{formatNumber callAmount}}</strong></td>
+      <td class="right">${{formatNumber priorCalled}}</td>
+      <td class="right">${{formatNumber totalCalled}}</td>
+      <td class="right">{{pctCalled}}%</td>
+      <td class="right">${{formatNumber unfunded}}</td>
+    </tr>
+    {{/each}}
+    <tr class="total-row">
+      <td><strong>Total</strong></td>
+      <td class="right">${{formatNumber totals.commitment}}</td>
+      <td class="right"><strong>${{formatNumber totalAmount}}</strong></td>
+      <td class="right">${{formatNumber totals.priorCalled}}</td>
+      <td class="right">${{formatNumber totals.totalCalled}}</td>
+      <td class="right">{{totals.pctCalled}}%</td>
+      <td class="right">${{formatNumber totals.unfunded}}</td>
+    </tr>
+  </table>
+</div>
+
+<!-- Wire Instructions -->
+<div class="wire-box">
+  <div class="wire-title">Wire Instructions</div>
+  <div class="wire-row"><span class="wire-label">Bank Name</span><span class="wire-value">{{wire.bankName}}</span></div>
+  <div class="wire-row"><span class="wire-label">ABA / SWIFT</span><span class="wire-value">{{wire.abaSwift}}</span></div>
+  <div class="wire-row"><span class="wire-label">Account Name</span><span class="wire-value">{{wire.accountName}}</span></div>
+  <div class="wire-row"><span class="wire-label">Account Number</span><span class="wire-value">{{wire.accountNumber}}</span></div>
+  <div class="wire-row"><span class="wire-label">Reference</span><span class="wire-value">{{wire.reference}}</span></div>
+  {{#if wire.intermediaryBank}}
+  <div class="wire-row"><span class="wire-label">Intermediary Bank</span><span class="wire-value">{{wire.intermediaryBank}}</span></div>
+  {{/if}}
+</div>
+
+<!-- Default Notice -->
+<div class="important-notice">
+  <div class="title">Default Provisions</div>
+  Pursuant to Section {{defaultSection}} of the Limited Partnership Agreement, failure to fund this capital call
+  by {{defaultDate}} shall constitute a default. Default remedies may include, without limitation, forfeiture of
+  up to {{defaultPenaltyPct}}% of the defaulting partner's capital account, loss of voting rights, and forced
+  transfer at a discount.
+</div>
+
+<div class="footnotes">
+  This Capital Call Notice is issued pursuant to the terms of the Limited Partnership Agreement of {{fundName}}
+  dated {{lpaDate}}. All terms used herein and not otherwise defined shall have the meanings set forth in the
+  Limited Partnership Agreement. Wire transfers must reference the investor name and call number.
+</div>
+
+</body>
+</html>
