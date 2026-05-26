@@ -15,7 +15,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const { createInstitutionalCore } = require('../institutional-core');
+const { createInstitutionalCore } = require('../../packages/institutional-core');
 
 // ── INSTITUTIONAL-CORE: Confidence, Citations, Audit, Approval, Versioning ──
 const _ic = createInstitutionalCore({
