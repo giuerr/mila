@@ -7,6 +7,15 @@ AI Finance Principal for Antoninus Global SPC. Owns the complete fund lifecycle:
 - **Agent ID:** `mila-cfo-v5.0`
 - **Version:** 5.0.0 (NANDA-compliant)
 
+## Three layers
+
+| Layer | Location |
+|---|---|
+| **Core** (this folder) | [`agents/mila/`](.) — Express server, 60+ routes, services, connectors, SQLite, LP portal templates |
+| **Backend HTTP** | [`backend/src/agents/mila/`](../../backend/src/agents/mila) — `route.js`, FATCA/CRS, K-1, tax calendar, filings |
+| **Frontend page** | [`frontend/tabularum-mila.html`](../../frontend/tabularum-mila.html) |
+| **Frontend JS** | [`frontend/js/pages/mila.js`](../../frontend/js/pages/mila.js) |
+
 ## Capabilities (40 modules)
 
 Fund accounting · capital calls · distributions · NAV · waterfall · financial reporting · tax · treasury · valuation · LP portal · ESG · K-1 · bank reconciliation · cap table · cashflow · compliance workflows · data room · ILPA transparency · forms / filings · benchmarking · attribution · anomaly detection · audit packaging · pacing · placement agent · platform sync · journal entries · expenses · fees · FX · insurance · IR · co-invest · fund-of-funds · onboarding · board · e-sign · PDF generation.
