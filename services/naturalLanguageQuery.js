@@ -40,7 +40,8 @@ class NaturalLanguageQueryService {
     const userPrompt = `Here is the current fund data:\n\n${JSON.stringify(dbContext, null, 2)}\n\n${context ? `Additional context: ${context}\n\n` : ''}Question: ${question}`;
 
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-5',
+      thinking: { type: 'disabled' },
       max_tokens: 1024,
       system: systemPrompt,
       messages: [{ role: 'user', content: userPrompt }]
