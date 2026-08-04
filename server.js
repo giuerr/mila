@@ -1,5 +1,5 @@
 /**
- * MILA — Finance Principal Agent v4.2 (NANDA-Compliant)
+ * MILA — Finance Principal Agent (NANDA-Compliant)
  * AI Finance Principal for Antoninus Global SPC.
  *
  * 40 modules | 9 connectors | SQLite DB | JWT auth | LP portal
@@ -117,7 +117,7 @@ app.use(decisionAuditLogger);
 
 // --- Public routes (no auth needed) ---
 app.get('/health', (req, res) => {
-  res.json({ agent: 'Mila', role: 'Finance Principal', entity: 'Antoninus Global SPC', status: 'operational', version: '4.2.0', modules: 40 });
+  res.json({ agent: 'Mila', role: 'Finance Principal', entity: 'Antoninus Global SPC', status: 'operational', version: AGENT_CARD.version, modules: 40 });
 });
 
 // ============================================================
