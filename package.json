@@ -5,14 +5,15 @@
   "main": "index.js",
   "license": "UNLICENSED",
   "private": true,
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "node server.js",
     "test": "node --test test/*.test.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
-    "@tabularum/institutional-core": "^1.0.0",
     "axios": "^1.7.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

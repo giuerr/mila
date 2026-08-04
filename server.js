@@ -15,7 +15,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const { createInstitutionalCore } = require('@tabularum/institutional-core');
+const { createInstitutionalCore } = require('./lib/institutional-core');
 
 // ── INSTITUTIONAL-CORE: Confidence, Citations, Audit, Approval, Versioning ──
 const _ic = createInstitutionalCore({
