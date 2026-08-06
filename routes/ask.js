@@ -10,7 +10,7 @@ const nlq = require('../services/naturalLanguageQuery');
 const { requireFields } = require('../middleware/security');
 const { asyncHandler } = require('../middleware/errorHandler');
 
-// AI-powered query (requires ANTHROPIC_API_KEY)
+// AI-powered query (requires OPENROUTER_API_KEY)
 router.post('/', requireFields('question'), asyncHandler(async (req, res) => {
   const result = await nlq.ask(req.body);
   const _ic = req.app.locals._ic;

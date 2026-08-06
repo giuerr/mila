@@ -4,8 +4,8 @@
  * cash flow statement, notes to financial statements.
  */
 
-const Anthropic = require('@anthropic-ai/sdk');
-const anthropic = new Anthropic();
+const { createLLMClient } = require('../llm-client');
+const anthropic = createLLMClient();
 
 class FinancialStatementsService {
 

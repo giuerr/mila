@@ -4,8 +4,8 @@
  * board books, risk dashboards, portfolio reviews.
  */
 
-const Anthropic = require('@anthropic-ai/sdk');
-const anthropic = new Anthropic();
+const { createLLMClient } = require('../llm-client');
+const anthropic = createLLMClient();
 
 class BoardMaterialsService {
 
