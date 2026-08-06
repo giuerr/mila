@@ -19,5 +19,34 @@
   },
   "role": "",
   "color": "#D9D9D9",
-  "ownerName": "Owner"
+  "ownerName": "Owner",
+  "calibration": {
+    "purpose": "Finance Principal \u2014 fund accounting, NAV, distribution waterfalls, fees and carried interest, capital accounts and LP reporting",
+    "exampleAsks": [
+      "Run a European waterfall on 100m contributed and 180m fund value at an 8% pref.",
+      "What is the management fee for the period after the step-down?",
+      "What is our clawback exposure at the current fund value?"
+    ],
+    "outOfScope": [
+      "Legal drafting or regulatory opinions",
+      "Investment recommendations or valuations of specific deals",
+      "Executing wires, payments or distributions",
+      "Filing tax returns or signing off audited accounts",
+      "Personal financial planning"
+    ],
+    "audience": "Fund CFOs, controllers and LP reporting teams",
+    "difficulty": "foundational",
+    "toolsInScope": [
+      "calculate_nav",
+      "calculate_nav_per_share",
+      "european_waterfall",
+      "american_waterfall",
+      "calculate_clawback",
+      "management_fee",
+      "fee_with_offsets",
+      "carried_interest",
+      "performance_fee",
+      "compute_ownership"
+    ]
+  }
 }
