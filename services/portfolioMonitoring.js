@@ -4,8 +4,8 @@
  * board reporting, exit preparation, interim finance leadership.
  */
 
-const Anthropic = require('@anthropic-ai/sdk');
-const anthropic = new Anthropic();
+const { createLLMClient } = require('../llm-client');
+const anthropic = createLLMClient();
 
 class PortfolioMonitoringService {
 

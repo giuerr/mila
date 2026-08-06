@@ -14,12 +14,11 @@ class NaturalLanguageQueryService {
 
   _getClient() {
     if (!this.anthropic) {
-      try {
-        const Anthropic = require('@anthropic-ai/sdk');
-        this.anthropic = new Anthropic();
-      } catch (e) {
-        throw new Error('Anthropic SDK not available. Set ANTHROPIC_API_KEY env var.');
+      const { createLLMClient, hasLLMKey } = require('../llm-client');
+      if (!hasLLMKey()) {
+        throw new Error('No LLM provider configured. Set OPENROUTER_API_KEY (or ANTHROPIC_API_KEY).');
       }
+      this.anthropic = createLLMClient();
     }
     return this.anthropic;
   }

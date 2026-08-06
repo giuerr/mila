@@ -3,11 +3,11 @@
  * Generates audit trails, compliance records, and PDF reports.
  */
 
-const Anthropic = require('@anthropic-ai/sdk');
+const { createLLMClient } = require('../llm-client');
 const accounting = require('../connectors/accounting');
 const fundPlatforms = require('../connectors/fund-platforms');
 
-const anthropic = new Anthropic();
+const anthropic = createLLMClient();
 
 class AuditService {
 

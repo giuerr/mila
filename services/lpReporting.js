@@ -4,10 +4,10 @@
  * Generates: quarterly letters, deal updates, market commentary, event recaps.
  */
 
-const Anthropic = require('@anthropic-ai/sdk');
+const { createLLMClient } = require('../llm-client');
 const fundPlatforms = require('../connectors/fund-platforms');
 
-const anthropic = new Anthropic();
+const anthropic = createLLMClient();
 
 const INVESTOR_TYPES = {
   VC: 'Venture Capital fund',
