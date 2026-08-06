@@ -17,11 +17,8 @@
       "server.js"
     ]
   },
-  "role": "",
-  "color": "#D9D9D9",
-  "ownerName": "Owner",
   "calibration": {
-    "purpose": "Finance Principal \u2014 fund accounting, NAV, distribution waterfalls, fees and carried interest, capital accounts and LP reporting",
+    "purpose": "Finance Principal — fund accounting, NAV, distribution waterfalls, fees and carried interest, capital accounts and LP reporting",
     "exampleAsks": [
       "Run a European waterfall on 100m contributed and 180m fund value at an 8% pref.",
       "What is the management fee for the period after the step-down?",
@@ -48,5 +45,9 @@
       "performance_fee",
       "compute_ownership"
     ]
-  }
+  },
+  "calibrationConfirmed": false,
+  "role": "",
+  "color": "#D9D9D9",
+  "ownerName": "Owner"
 }
