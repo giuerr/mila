@@ -60,6 +60,35 @@ app.use(helmet);                          // Security headers (X-Frame-Options, 
 app.use(cors);                            // CORS — whitelisted origins only
 app.use(securityLogger);                  // Log 401/403/429 events
 app.use(express.json({ limit: '10mb' })); // Reduced from 50mb — prevents payload DoS
+
+// ─── Reasoning core ───────────────────────────────────────────────────────────
+//
+// Everything below is a menu: endpoints that act only when a caller already
+// knows which one to call, and with exactly which body. This gives Mila the
+// other half — accept a goal, plan, call her own tools, and work it through.
+//
+// It also publishes the surface every agent shares, so one harness can drive
+// all of them:
+//
+//   GET  /health   GET /agent-card   GET /tools
+//   POST /task     POST /chat        POST /v1/chat/completions
+//
+// Mounted here, ahead of her own routes, because Express gives precedence to
+// whichever handler registered first and the point of these paths is that they
+// behave identically on every agent. The stricter, richer handlers below stay
+// reachable at their own paths.
+const { createMind, mountAgent } = require('./agent-core');
+const { TOOLS, SYSTEM_PROMPT } = require('./tools');
+
+const mind = createMind({
+  name:         'Mila',
+  systemPrompt: SYSTEM_PROMPT,
+  tools:        TOOLS,
+  logger:       (event, detail) => console.log(JSON.stringify({ _type: 'agent_core', event, ...detail })),
+});
+
+mountAgent(app, { mind, agentCard: () => AGENT_CARD });
+
 app.use(sanitizeBody);                    // Strip HTML/JS from all request bodies
 app.set('trust proxy', 1);               // Trust first proxy (for rate limiting behind reverse proxy)
 
@@ -286,6 +315,7 @@ const PORT = process.env.PORT || 3400;
 
 // Only listen when run directly. Importing this module must not bind a port —
 // requiring the package previously started a server on 3400 as a side effect.
+
 if (require.main === module) {
   const server = app.listen(PORT, () => {
     console.log(`\n  ╔══════════════════════════════════════════════════════╗`);
