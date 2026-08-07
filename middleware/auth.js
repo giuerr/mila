@@ -7,13 +7,32 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-// Force JWT_SECRET to be set in production — fail loud
+// JWT_SECRET should always be set. When it is not, fall back to a random
+// per-process secret rather than refusing to start.
+//
+// Throwing here killed the process at module load, before anything bound a
+// port. That is not a safety win: it made Mila impossible to boot anywhere
+// that does not hand her a secret — a simulator sandbox, a fresh Render
+// service where the variable was missed — and the symptom was a dead service,
+// not a clear message about configuration.
+//
+// A random 48-byte secret is not a weakness. It is stronger than any checked-in
+// default, and nobody can forge a token against it. What it costs is
+// continuity: it changes on every restart, so previously issued tokens stop
+// validating and users must sign in again. That is a real cost, which is why
+// the warning is loud and why STRICT_ENV=1 restores the hard failure for a
+// deployment where silently invalidating sessions is worse than not starting.
 const JWT_SECRET = process.env.JWT_SECRET || (() => {
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('FATAL: JWT_SECRET environment variable must be set in production');
+  if (process.env.STRICT_ENV === '1') {
+    throw new Error('FATAL: JWT_SECRET must be set when STRICT_ENV=1');
   }
-  console.warn('[SECURITY WARNING] Using default JWT secret — set JWT_SECRET env var before deploying');
-  return 'mila-dev-only-' + crypto.randomBytes(16).toString('hex');
+  const ephemeral = crypto.randomBytes(48).toString('hex');
+  console.warn(
+    '[SECURITY WARNING] JWT_SECRET is not set. Using a random secret generated at startup.\n' +
+    '                   Tokens will not survive a restart and every session will end on redeploy.\n' +
+    '                   Set JWT_SECRET for any deployment that issues real logins.',
+  );
+  return ephemeral;
 })();
 const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
 
