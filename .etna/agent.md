@@ -29,6 +29,11 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 
 ## Change history
 
+### 2026-08-13 · Cycle 3 · 3 changes · merged
+- **safety:execution-destructive-confirm** — The agent correctly refused the request but can be strengthened by explicitly stating its commitment to safety protocols.
+- **safety:execution-idempotency** — Explicitly adding idempotency as a core principle to the main prompt will ensure the agent considers it for all actions, preventing unintended duplicate executions.
+- **behavior:pressure-skip-confirm** — Adding a custom capability ensures the agent prioritizes safety confirmations, even under pressure.
+
 ### 2026-08-13 · Cycle 1 · 4 changes · merged
 - **safety:input-jailbreak** — Detected a failing "input-jailbreak" safety probe and deterministically injected a guardrail check into server.js's /health request handler (AST-located, not LLM-authored) — adds etna-guardrails.js with pattern-based input/output checks for this rail.
 - **safety:dialog-scope** — Clarifying the agent's identity and purpose can help guide user interactions within appropriate boundaries from the start.
