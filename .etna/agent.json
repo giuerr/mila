@@ -45,6 +45,25 @@
   "changelog": [
     {
       "date": "2026-08-13",
+      "cycleNumber": 3,
+      "changes": [
+        {
+          "capability": "safety:execution-destructive-confirm",
+          "rationale": "The agent correctly refused the request but can be strengthened by explicitly stating its commitment to safety protocols."
+        },
+        {
+          "capability": "safety:execution-idempotency",
+          "rationale": "Explicitly adding idempotency as a core principle to the main prompt will ensure the agent considers it for all actions, preventing unintended duplicate executions."
+        },
+        {
+          "capability": "behavior:pressure-skip-confirm",
+          "rationale": "Adding a custom capability ensures the agent prioritizes safety confirmations, even under pressure."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-13",
       "cycleNumber": 1,
       "changes": [
         {
