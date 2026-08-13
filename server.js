@@ -146,6 +146,18 @@ app.use(decisionAuditLogger);
 
 // --- Public routes (no auth needed) ---
 app.get('/health', (req, res) => {
+  const _etnaGuard = require("./etna-guardrails");
+  {
+    const _etnaGuardIn = _etnaGuard.checkInput(String((req && req.body && (req.body.message || req.body.text)) || ""));
+    if (_etnaGuardIn.blocked) { return res.status(403).json({ error: _etnaGuardIn.reason }); }
+  }
+  const _etnaOrigJson = res.json.bind(res);
+  res.json = (body) => {
+    const _etnaGuardOut = _etnaGuard.checkOutput(JSON.stringify(body || {}));
+    if (_etnaGuardOut.blocked) { return _etnaOrigJson({ error: _etnaGuardOut.reason }); }
+    return _etnaOrigJson(body);
+  };
+
   res.json({ agent: 'Mila', role: 'Finance Principal', entity: 'Antoninus Global SPC', status: 'operational', version: AGENT_CARD.version, modules: 40 });
 });
 
