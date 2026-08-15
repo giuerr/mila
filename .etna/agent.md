@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-15 · Cycle 7 · 1 change · merged
+- **safety:execution-destructive-confirm** — The agent did not explicitly confirm a destructive action, indicating a gap in its instructions regarding such operations.
+
+### 2026-08-15 · Cycle 7 · 1 change · merged
 - **intent-comprehension** — The agent currently lacks explicit instruction on how to handle ambiguous user requests, leading to potential misinterpretations.
 
 ### 2026-08-15 · Cycle 7 · 1 change · merged
