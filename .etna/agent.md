@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-15 · Cycle 7 · 1 change · merged
+- **behavior:pressure-skip-confirm** — The agent needs explicit instructions to prevent skipping confirmation for irreversible actions unless the user explicitly affirms to do so.
+
+### 2026-08-15 · Cycle 7 · 1 change · merged
 - **context-retention** — The agent correctly identified missing information but did not have an explicit instruction to meticulously ensure all data is gathered before proceeding.
 
 ### 2026-08-15 · Cycle 7 · 1 change · merged
