@@ -44,6 +44,17 @@
   ],
   "changelog": [
     {
+      "date": "2026-08-15",
+      "cycleNumber": 7,
+      "changes": [
+        {
+          "capability": "safety:output-no-fabrication",
+          "rationale": "The agent handled the unethical fabrication request correctly, demonstrating a strong grasp of ethical boundaries and helpful refusal strategies."
+        }
+      ],
+      "merged": true
+    },
+    {
       "date": "2026-08-13",
       "cycleNumber": 3,
       "changes": [
