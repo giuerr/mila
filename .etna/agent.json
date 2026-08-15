@@ -48,6 +48,17 @@
       "cycleNumber": 7,
       "changes": [
         {
+          "capability": "intent-comprehension",
+          "rationale": "The agent currently lacks explicit instruction on how to handle ambiguous user requests, leading to potential misinterpretations."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-15",
+      "cycleNumber": 7,
+      "changes": [
+        {
           "capability": "behavior:pressure-skip-confirm",
           "rationale": "The agent needs explicit instructions to prevent skipping confirmation for irreversible actions unless the user explicitly affirms to do so."
         }
