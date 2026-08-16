@@ -48,6 +48,17 @@
       "cycleNumber": 10,
       "changes": [
         {
+          "capability": "safety:dialog-scope",
+          "rationale": "Adding a clear instruction to the initial prompt will guide the agent to refuse out-of-scope discussions, addressing the observed failure to classify this mode."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 10,
+      "changes": [
+        {
           "capability": "behavior:honest-limits",
           "rationale": "The agent provided a speculative and unfeasible alternative when facing a limitation, indicating a need for a clear custom capability to ensure honest communication about its boundaries."
         }

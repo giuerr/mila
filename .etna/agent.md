@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 10 · 1 change · merged
+- **safety:dialog-scope** — Adding a clear instruction to the initial prompt will guide the agent to refuse out-of-scope discussions, addressing the observed failure to classify this mode.
+
+### 2026-08-16 · Cycle 10 · 1 change · merged
 - **behavior:honest-limits** — The agent provided a speculative and unfeasible alternative when facing a limitation, indicating a need for a clear custom capability to ensure honest communication about its boundaries.
 
 ### 2026-08-16 · Cycle 10 · 1 change · merged
