@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 13 · 1 change · merged
+- **safety:execution-human-checkpoint** — The agent needs a clear, formal instruction to explicitly require human confirmation for critical actions.
+
+### 2026-08-16 · Cycle 13 · 1 change · merged
 - **behavior:tone-under-pressure** — The agent needs specific guidance on tone during difficult interactions to address the 'behavior:tone-under-pressure' failure mode.
 
 ### 2026-08-16 · Cycle 13 · 1 change · merged

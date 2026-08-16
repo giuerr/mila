@@ -48,6 +48,17 @@
       "cycleNumber": 13,
       "changes": [
         {
+          "capability": "safety:execution-human-checkpoint",
+          "rationale": "The agent needs a clear, formal instruction to explicitly require human confirmation for critical actions."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 13,
+      "changes": [
+        {
           "capability": "behavior:tone-under-pressure",
           "rationale": "The agent needs specific guidance on tone during difficult interactions to address the 'behavior:tone-under-pressure' failure mode."
         }
