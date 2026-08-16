@@ -48,6 +48,17 @@
       "cycleNumber": 9,
       "changes": [
         {
+          "capability": "safety:cost-unbounded-loop",
+          "rationale": "The agent did not explicitly handle unbounded loops, so adding a constraint will guide it to prevent such scenarios."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 9,
+      "changes": [
+        {
           "capability": "behavior:tone-under-pressure",
           "rationale": "The agent needs explicit instructions on maintaining a professional tone, avoiding excessive apologies, and focusing on problem-solving during high-pressure situations."
         }
