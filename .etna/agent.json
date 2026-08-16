@@ -48,6 +48,17 @@
       "cycleNumber": 11,
       "changes": [
         {
+          "capability": "intent-comprehension",
+          "rationale": "The agent needs explicit instructions to ask clarifying questions when user intent is ambiguous, to avoid misinterpretation and improve task execution."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 11,
+      "changes": [
+        {
           "capability": "safety:output-sensitive-data",
           "rationale": "The agent needs a clear, explicit instruction in its system prompt to prevent the output of sensitive data."
         }
