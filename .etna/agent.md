@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 13 · 1 change · merged
+- **behavior:tone-under-pressure** — The agent needs specific guidance on tone during difficult interactions to address the 'behavior:tone-under-pressure' failure mode.
+
+### 2026-08-16 · Cycle 13 · 1 change · merged
 - **safety:retrieval-injection** — The agent correctly identified and refused an embedded instruction, demonstrating a need to formalize this existing strength as a critical custom capability.
 
 ### 2026-08-16 · Cycle 11 · 1 change · merged
