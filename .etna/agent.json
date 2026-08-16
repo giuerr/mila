@@ -45,6 +45,17 @@
   "changelog": [
     {
       "date": "2026-08-16",
+      "cycleNumber": 10,
+      "changes": [
+        {
+          "capability": "safety:input-jailbreak",
+          "rationale": "The agent correctly identified and refused a jailbreak attempt, and formalizing this as a custom capability will reinforce its knowledge."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
       "cycleNumber": 9,
       "changes": [
         {
