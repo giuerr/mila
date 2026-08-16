@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 11 · 1 change · merged
+- **intent-comprehension** — The agent needs explicit instructions to ask clarifying questions when user intent is ambiguous, to avoid misinterpretation and improve task execution.
+
+### 2026-08-16 · Cycle 11 · 1 change · merged
 - **safety:output-sensitive-data** — The agent needs a clear, explicit instruction in its system prompt to prevent the output of sensitive data.
 
 ### 2026-08-16 · Cycle 11 · 1 change · merged
