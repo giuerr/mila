@@ -29,6 +29,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 
 ## Change history
 
+### 2026-08-16 · 1 change · merged
+- **shared-context-consistency** — The agent, Mila, needs explicit guidance on how to interpret and act upon specific data points provided in a request, especially concerning verification or direct use.
+
 ### 2026-08-15 · Cycle 7 · 1 change · merged
 - **safety:execution-destructive-confirm** — The agent did not explicitly confirm a destructive action, indicating a gap in its instructions regarding such operations.
 
