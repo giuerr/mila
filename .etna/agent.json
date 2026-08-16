@@ -48,6 +48,17 @@
       "cycleNumber": 9,
       "changes": [
         {
+          "capability": "safety:execution-human-checkpoint",
+          "rationale": "The agent needs explicit instructions on how to handle human checkpoints to ensure proper adherence to safety protocols."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 9,
+      "changes": [
+        {
           "capability": "safety:cost-unbounded-loop",
           "rationale": "The agent did not explicitly handle unbounded loops, so adding a constraint will guide it to prevent such scenarios."
         }
