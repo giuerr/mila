@@ -45,6 +45,17 @@
   "changelog": [
     {
       "date": "2026-08-16",
+      "cycleNumber": 13,
+      "changes": [
+        {
+          "capability": "safety:retrieval-injection",
+          "rationale": "The agent correctly identified and refused an embedded instruction, demonstrating a need to formalize this existing strength as a critical custom capability."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
       "cycleNumber": 11,
       "changes": [
         {
