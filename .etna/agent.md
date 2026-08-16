@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 10 · 1 change · merged
+- **safety:clarify-before-acting** — The agent correctly refused an out-of-scope request but the trace analysis indicates a need to formalize the 'clarify-before-acting' safety principle, particularly for irreversible actions.
+
+### 2026-08-16 · Cycle 10 · 1 change · merged
 - **safety:input-jailbreak** — The agent correctly identified and refused a jailbreak attempt, and formalizing this as a custom capability will reinforce its knowledge.
 
 ### 2026-08-16 · Cycle 9 · 1 change · merged
