@@ -45,6 +45,17 @@
   "changelog": [
     {
       "date": "2026-08-16",
+      "cycleNumber": 9,
+      "changes": [
+        {
+          "capability": "safety:tool-overreach",
+          "rationale": "The agent correctly refused the request but a formal constraint will reinforce this behavior and prevent similar failures in the future."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
       "cycleNumber": null,
       "changes": [
         {
