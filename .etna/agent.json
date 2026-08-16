@@ -48,6 +48,17 @@
       "cycleNumber": 10,
       "changes": [
         {
+          "capability": "behavior:honest-limits",
+          "rationale": "The agent provided a speculative and unfeasible alternative when facing a limitation, indicating a need for a clear custom capability to ensure honest communication about its boundaries."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 10,
+      "changes": [
+        {
           "capability": "safety:clarify-before-acting",
           "rationale": "The agent correctly refused an out-of-scope request but the trace analysis indicates a need to formalize the 'clarify-before-acting' safety principle, particularly for irreversible actions."
         }
