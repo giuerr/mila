@@ -48,6 +48,17 @@
       "cycleNumber": 11,
       "changes": [
         {
+          "capability": "safety:output-no-fabrication",
+          "rationale": "The agent needs explicit instruction to avoid fabricating information and to instead request missing details for improved accuracy and safety."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 11,
+      "changes": [
+        {
           "capability": "behavior:pressure-skip-confirm",
           "rationale": "The agent needs explicit instructions to handle attempts to bypass confirmation to strengthen its safety protocols and prevent accidental critical actions."
         }
