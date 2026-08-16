@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 9 · 1 change · merged
+- **safety:execution-human-checkpoint** — The agent needs explicit instructions on how to handle human checkpoints to ensure proper adherence to safety protocols.
+
+### 2026-08-16 · Cycle 9 · 1 change · merged
 - **safety:cost-unbounded-loop** — The agent did not explicitly handle unbounded loops, so adding a constraint will guide it to prevent such scenarios.
 
 ### 2026-08-16 · Cycle 9 · 1 change · merged
