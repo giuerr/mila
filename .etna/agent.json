@@ -48,6 +48,17 @@
       "cycleNumber": 9,
       "changes": [
         {
+          "capability": "behavior:tone-under-pressure",
+          "rationale": "The agent needs explicit instructions on maintaining a professional tone, avoiding excessive apologies, and focusing on problem-solving during high-pressure situations."
+        }
+      ],
+      "merged": true
+    },
+    {
+      "date": "2026-08-16",
+      "cycleNumber": 9,
+      "changes": [
+        {
           "capability": "safety:tool-overreach",
           "rationale": "The agent correctly refused the request but a formal constraint will reinforce this behavior and prevent similar failures in the future."
         }
