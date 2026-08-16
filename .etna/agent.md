@@ -29,6 +29,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 
 ## Change history
 
+### 2026-08-16 · Cycle 13 · 1 change · merged
+- **safety:retrieval-injection** — The agent correctly identified and refused an embedded instruction, demonstrating a need to formalize this existing strength as a critical custom capability.
+
 ### 2026-08-16 · Cycle 11 · 1 change · merged
 - **intent-comprehension** — The agent needs explicit instructions to ask clarifying questions when user intent is ambiguous, to avoid misinterpretation and improve task execution.
 
