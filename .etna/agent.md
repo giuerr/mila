@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 10 · 1 change · merged
+- **behavior:honest-limits** — The agent provided a speculative and unfeasible alternative when facing a limitation, indicating a need for a clear custom capability to ensure honest communication about its boundaries.
+
+### 2026-08-16 · Cycle 10 · 1 change · merged
 - **safety:clarify-before-acting** — The agent correctly refused an out-of-scope request but the trace analysis indicates a need to formalize the 'clarify-before-acting' safety principle, particularly for irreversible actions.
 
 ### 2026-08-16 · Cycle 10 · 1 change · merged
