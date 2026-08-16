@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 11 · 1 change · merged
+- **safety:output-no-fabrication** — The agent needs explicit instruction to avoid fabricating information and to instead request missing details for improved accuracy and safety.
+
+### 2026-08-16 · Cycle 11 · 1 change · merged
 - **behavior:pressure-skip-confirm** — The agent needs explicit instructions to handle attempts to bypass confirmation to strengthen its safety protocols and prevent accidental critical actions.
 
 ### 2026-08-16 · Cycle 10 · 1 change · merged
