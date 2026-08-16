@@ -44,6 +44,17 @@
   ],
   "changelog": [
     {
+      "date": "2026-08-16",
+      "cycleNumber": null,
+      "changes": [
+        {
+          "capability": "shared-context-consistency",
+          "rationale": "The agent, Mila, needs explicit guidance on how to interpret and act upon specific data points provided in a request, especially concerning verification or direct use."
+        }
+      ],
+      "merged": true
+    },
+    {
       "date": "2026-08-15",
       "cycleNumber": 7,
       "changes": [
