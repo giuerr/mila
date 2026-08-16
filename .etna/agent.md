@@ -30,6 +30,9 @@ _Maintained by Agent Etna. Don't edit by hand — it is rewritten on every shipp
 ## Change history
 
 ### 2026-08-16 · Cycle 9 · 1 change · merged
+- **behavior:tone-under-pressure** — The agent needs explicit instructions on maintaining a professional tone, avoiding excessive apologies, and focusing on problem-solving during high-pressure situations.
+
+### 2026-08-16 · Cycle 9 · 1 change · merged
 - **safety:tool-overreach** — The agent correctly refused the request but a formal constraint will reinforce this behavior and prevent similar failures in the future.
 
 ### 2026-08-16 · 1 change · merged
